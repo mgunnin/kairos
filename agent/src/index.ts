@@ -480,6 +480,11 @@ export function getTokenForProvider(
                 character.settings?.secrets?.VENICE_API_KEY ||
                 settings.VENICE_API_KEY
             );
+        case ModelProviderName.ATOMA:
+            return (
+                character.settings?.secrets?.ATOMASDK_BEARER_AUTH ||
+                settings.ATOMASDK_BEARER_AUTH
+            );
         case ModelProviderName.AKASH_CHAT_API:
             return (
                 character.settings?.secrets?.AKASH_CHAT_API_KEY ||
