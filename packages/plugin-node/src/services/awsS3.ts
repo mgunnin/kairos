@@ -58,7 +58,17 @@ export class AwsS3Service extends Service implements IAwsS3Service {
             return false;
         }
 
+        /** Optional fields to allow for other providers */
+        const endpoint = this.runtime.getSetting("AWS_S3_ENDPOINT");
+        const sslEnabled = this.runtime.getSetting("AWS_S3_SSL_ENABLED");
+        const forcePathStyle = this.runtime.getSetting("AWS_S3_FORCE_PATH_STYLE");
+
         this.s3Client = new S3Client({
+            ...(endpoint ? { endpoint } : {}),
+            ...(sslEnabled ? { sslEnabled } : {}),
+            ...(forcePathStyle
+                ? { forcePathStyle: Boolean(forcePathStyle) }
+                : {}),
             region: AWS_REGION,
             credentials: {
                 accessKeyId: AWS_ACCESS_KEY_ID,
