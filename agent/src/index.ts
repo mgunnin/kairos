@@ -5,12 +5,12 @@ import { SqliteDatabaseAdapter } from "@elizaos/adapter-sqlite";
 import { SupabaseDatabaseAdapter } from "@elizaos/adapter-supabase";
 import { AutoClientInterface } from "@elizaos/client-auto";
 import { DiscordClientInterface } from "@elizaos/client-discord";
+import { FarcasterClientInterface } from "@elizaos/client-farcaster";
 import { InstagramClientInterface } from "@elizaos/client-instagram";
 import { LensAgentClient } from "@elizaos/client-lens";
 import { SlackClientInterface } from "@elizaos/client-slack";
 import { TelegramClientInterface } from "@elizaos/client-telegram";
 import { TwitterClientInterface } from "@elizaos/client-twitter";
-import { FarcasterClientInterface } from "@elizaos/client-farcaster";
 // import { ReclaimAdapter } from "@elizaos/plugin-reclaim";
 import { PrimusAdapter } from "@elizaos/plugin-primus";
 
@@ -66,6 +66,8 @@ import { coinmarketcapPlugin } from "@elizaos/plugin-coinmarketcap";
 import { confluxPlugin } from "@elizaos/plugin-conflux";
 import { createCosmosPlugin } from "@elizaos/plugin-cosmos";
 import { cronosZkEVMPlugin } from "@elizaos/plugin-cronoszkevm";
+import { dexScreenerPlugin } from "@elizaos/plugin-dexscreener";
+import { echoChambersPlugin } from "@elizaos/plugin-echochambers";
 import { evmPlugin } from "@elizaos/plugin-evm";
 import { flowPlugin } from "@elizaos/plugin-flow";
 import { fuelPlugin } from "@elizaos/plugin-fuel";
@@ -99,9 +101,8 @@ import { verifiableLogPlugin } from "@elizaos/plugin-tee-verifiable-log";
 import { thirdwebPlugin } from "@elizaos/plugin-thirdweb";
 import { tonPlugin } from "@elizaos/plugin-ton";
 import { webSearchPlugin } from "@elizaos/plugin-web-search";
-import { echoChambersPlugin } from "@elizaos/plugin-echochambers";
-import { dexScreenerPlugin } from "@elizaos/plugin-dexscreener";
 
+import createRabbiTraderPlugin from "@elizaos/plugin-rabbi-trader";
 import { zksyncEraPlugin } from "@elizaos/plugin-zksync-era";
 import Database from "better-sqlite3";
 import fs from "fs";
@@ -109,7 +110,9 @@ import net from "net";
 import path from "path";
 import { fileURLToPath } from "url";
 import yargs from "yargs";
-
+import { cryptoNewsProvider } from "../providers/cryptoNewsProvider";
+import { cryptoPriceProvider } from "../providers/cryptoPriceProvider";
+import { timeProvider } from "../providers/timeProvider";
 
 const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
 const __dirname = path.dirname(__filename); // get the name of the directory
@@ -246,14 +249,13 @@ async function loadCharacter(filePath: string): Promise<Character> {
 }
 
 function commaSeparatedStringToArray(commaSeparated: string): string[] {
-    return commaSeparated?.split(",").map(value => value.trim())
+    return commaSeparated?.split(",").map((value) => value.trim());
 }
-
 
 export async function loadCharacters(
     charactersArg: string
 ): Promise<Character[]> {
-    let characterPaths = commaSeparatedStringToArray(charactersArg)
+    let characterPaths = commaSeparatedStringToArray(charactersArg);
     const loadedCharacters: Character[] = [];
 
     if (characterPaths?.length > 0) {
@@ -327,7 +329,9 @@ export async function loadCharacters(
 
     if (hasValidRemoteUrls()) {
         elizaLogger.info("Loading characters from remote URLs");
-        let characterUrls = commaSeparatedStringToArray(process.env.REMOTE_CHARACTER_URLS)
+        let characterUrls = commaSeparatedStringToArray(
+            process.env.REMOTE_CHARACTER_URLS
+        );
         for (const characterUrl of characterUrls) {
             const character = await loadCharacterFromUrl(characterUrl);
             loadedCharacters.push(character);
@@ -774,6 +778,9 @@ export async function createAgent(
         // character.plugins are handled when clients are added
         plugins: [
             bootstrapPlugin,
+            await createRabbiTraderPlugin((key: string) =>
+                getSecret(character, key)
+            ),
             getSecret(character, "DEXSCREENER_API_KEY")
                 ? dexScreenerPlugin
                 : null,
@@ -941,7 +948,7 @@ export async function createAgent(
                 ? createNFTCollectionsPlugin()
                 : null,
         ].filter(Boolean),
-        providers: [],
+        providers: [timeProvider, cryptoPriceProvider, cryptoNewsProvider],
         actions: [],
         services: [],
         managers: [],
@@ -1101,12 +1108,10 @@ const checkPortAvailable = (port: number): Promise<boolean> => {
     });
 };
 
-
 const hasValidRemoteUrls = () =>
     process.env.REMOTE_CHARACTER_URLS &&
     process.env.REMOTE_CHARACTER_URLS !== "" &&
     process.env.REMOTE_CHARACTER_URLS.startsWith("http");
-
 
 const startAgents = async () => {
     const directClient = new DirectClient();
