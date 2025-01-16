@@ -1,7 +1,7 @@
 import { elizaLogger, IAgentRuntime } from "@elizaos/core";
 import { Connection, Keypair, VersionedTransaction } from "@solana/web3.js";
-import { decodeBase58 } from "./utils";
 import { SAFETY_LIMITS } from "./constants";
+import { decodeBase58 } from "./utils";
 
 /**
  * Gets wallet keypair from runtime settings
@@ -10,19 +10,37 @@ import { SAFETY_LIMITS } from "./constants";
  * @throws Error if private key is missing or invalid
  */
 export function getWalletKeypair(runtime?: IAgentRuntime): Keypair {
-    // Check chain type from token address or configuration
+    const privateKeyString =
+        runtime?.getSetting("WALLET_PRIVATE_KEY") ||
+        runtime?.getSetting("SOLANA_PRIVATE_KEY");
 
-    const privateKeyString = runtime?.getSetting("WALLET_PRIVATE_KEY");
     if (!privateKeyString) {
+        elizaLogger.error("No wallet private key found in settings");
         throw new Error("No wallet private key configured");
     }
 
     try {
-        const privateKeyBytes = decodeBase58(privateKeyString);
-        return Keypair.fromSecretKey(privateKeyBytes);
+        // Handle array format
+        if (
+            privateKeyString.startsWith("[") &&
+            privateKeyString.endsWith("]")
+        ) {
+            const privateKeyArray = JSON.parse(privateKeyString);
+            return Keypair.fromSecretKey(new Uint8Array(privateKeyArray));
+        }
+
+        // Handle base58 format
+        if (
+            typeof privateKeyString === "string" &&
+            !privateKeyString.startsWith("[")
+        ) {
+            return Keypair.fromSecretKey(decodeBase58(privateKeyString));
+        }
+
+        throw new Error("Invalid private key format");
     } catch (error) {
-        elizaLogger.error("Failed to create wallet keypair:", error);
-        throw error;
+        elizaLogger.error("Failed to create keypair:", error);
+        throw new Error(`Invalid wallet private key format: ${error.message}`);
     }
 }
 
@@ -62,7 +80,8 @@ export async function getWalletBalance(
 // Add helper function to get connection
 async function getConnection(runtime: IAgentRuntime): Promise<Connection> {
     return new Connection(
-        runtime.getSetting("SOLANA_RPC_URL") || "https://api.mainnet-beta.solana.com"
+        runtime.getSetting("SOLANA_RPC_URL") ||
+            "https://api.mainnet-beta.solana.com"
     );
 }
 

@@ -63,3 +63,7 @@ agent/content
 eliza.manifest
 eliza.manifest.sgx
 eliza.sig
+
+notes/*
+core/*
+.specstory
