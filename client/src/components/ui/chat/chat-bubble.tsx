@@ -125,8 +125,7 @@ const ChatBubbleMessage = React.forwardRef<
 ChatBubbleMessage.displayName = "ChatBubbleMessage";
 
 // ChatBubbleTimestamp
-interface ChatBubbleTimestampProps
-    extends React.HTMLAttributes<HTMLDivElement> {
+interface ChatBubbleTimestampProps extends React.HTMLAttributes<HTMLDivElement> {
     timestamp: string;
 }
 

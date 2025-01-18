@@ -298,7 +298,7 @@ export class AgentRuntime implements IAgentRuntime {
         this.ensureRoomExists(this.agentId);
         this.ensureUserExists(
             this.agentId,
-            this.character.name,
+            this.character.username || this.character.name,
             this.character.name
         ).then(() => {
             // postgres needs the user to exist before you can add a participant
@@ -1111,10 +1111,10 @@ export class AgentRuntime implements IAgentRuntime {
         if (!account) {
             await this.databaseAdapter.createAccount({
                 id: userId,
-                name: name || userName || "Unknown User",
-                username: userName || name || "Unknown",
-                email: email || (userName || "Bot") + "@" + source || "Unknown", // Temporary
-                details: { summary: "" },
+                name: name || this.character.name || "Unknown User",
+                username: userName || this.character.username || "Unknown",
+                email: email || this.character.email || userId, // Temporary
+                details: this.character || { summary: "" },
             });
             elizaLogger.success(`User ${userName} created successfully.`);
         }
@@ -1147,7 +1147,7 @@ export class AgentRuntime implements IAgentRuntime {
         await Promise.all([
             this.ensureUserExists(
                 this.agentId,
-                this.character.name ?? "Agent",
+                this.character.username ?? "Agent",
                 this.character.name ?? "Agent",
                 source
             ),

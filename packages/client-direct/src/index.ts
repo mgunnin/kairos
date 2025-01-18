@@ -113,6 +113,8 @@ export class DirectClient {
     private agents: Map<string, AgentRuntime>; // container management
     private server: any; // Store server instance
     public startAgent: Function; // Store startAgent functor
+    public loadCharacterTryPath: Function; // Store loadCharacterTryPath functor
+    public jsonToCharacter: Function; // Store jsonToCharacter functor
 
     constructor() {
         elizaLogger.log("DirectClient constructor");
@@ -135,7 +137,6 @@ export class DirectClient {
 
         const apiRouter = createApiRouter(this.agents, this);
         this.app.use(apiRouter);
-
 
         const apiLogRouter = createVerifiableLogApiRouter(this.agents);
         this.app.use(apiLogRouter);
@@ -555,38 +556,42 @@ export class DirectClient {
                         content: contentObj,
                     };
 
-                    runtime.messageManager.createMemory(responseMessage).then(() => {
-                          const messageId = stringToUuid(Date.now().toString());
-                          const memory: Memory = {
-                              id: messageId,
-                              agentId: runtime.agentId,
-                              userId,
-                              roomId,
-                              content,
-                              createdAt: Date.now(),
-                          };
+                    runtime.messageManager
+                        .createMemory(responseMessage)
+                        .then(() => {
+                            const messageId = stringToUuid(
+                                Date.now().toString()
+                            );
+                            const memory: Memory = {
+                                id: messageId,
+                                agentId: runtime.agentId,
+                                userId,
+                                roomId,
+                                content,
+                                createdAt: Date.now(),
+                            };
 
-                          // run evaluators (generally can be done in parallel with processActions)
-                          // can an evaluator modify memory? it could but currently doesn't
-                          runtime.evaluate(memory, state).then(() => {
-                            // only need to call if responseMessage.content.action is set
-                            if (contentObj.action) {
-                                // pass memory (query) to any actions to call
-                                runtime.processActions(
-                                    memory,
-                                    [responseMessage],
-                                    state,
-                                    async (_newMessages) => {
-                                        // FIXME: this is supposed override what the LLM said/decided
-                                        // but the promise doesn't make this possible
-                                        //message = newMessages;
-                                        return [memory];
-                                    }
-                                ); // 0.674s
-                            }
-                            resolve(true);
+                            // run evaluators (generally can be done in parallel with processActions)
+                            // can an evaluator modify memory? it could but currently doesn't
+                            runtime.evaluate(memory, state).then(() => {
+                                // only need to call if responseMessage.content.action is set
+                                if (contentObj.action) {
+                                    // pass memory (query) to any actions to call
+                                    runtime.processActions(
+                                        memory,
+                                        [responseMessage],
+                                        state,
+                                        async (_newMessages) => {
+                                            // FIXME: this is supposed override what the LLM said/decided
+                                            // but the promise doesn't make this possible
+                                            //message = newMessages;
+                                            return [memory];
+                                        }
+                                    ); // 0.674s
+                                }
+                                resolve(true);
+                            });
                         });
-                    });
                 });
                 res.json({ response: hfOut });
             }
