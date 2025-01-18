@@ -1,7 +1,7 @@
 # @elizaos/squid-router
 
 This plugin adds Squid Router functionality to Eliza agents. It allows cross chain swaps between blockchains.
-For now, only swaps beteen EVM chains are supported, but the plan is to add swaps from/to Solana and the Cosomos ecosystem.
+For now, only swaps between EVM chains are supported, but the plan is to add swaps from/to Solana and the Cosomos ecosystem.
 For supported chains and tokens, please refer to the [Squid Router documentation](https://docs.squidrouter.com/).
 
 ## Configuration

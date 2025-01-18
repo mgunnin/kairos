@@ -12,7 +12,6 @@
     },
     "scripts": {
         "build": "unbuild",
-        "lint": "eslint --fix  --cache .",
         "start": "node ./dist/index.cjs",
         "automd": "automd"
     },

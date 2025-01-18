@@ -1,8 +1,8 @@
-import { InjectiveGrpcBase } from "../grpc/grpc-base";
+import type { InjectiveGrpcBase } from "../grpc/grpc-base";
 import { MsgBid } from "@injectivelabs/sdk-ts";
-import * as AuctionTypes from "../types/auction";
+import type * as AuctionTypes from "../types/auction";
 import {
-    StandardResponse,
+    type StandardResponse,
     createSuccessResponse,
     createErrorResponse,
 } from "../types/index";

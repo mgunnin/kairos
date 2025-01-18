@@ -1,7 +1,7 @@
-import { Provider, type IAgentRuntime, type Memory } from "@elizaos/core";
-import { ReservoirService } from "../services/reservoir";
-import { MarketIntelligenceService } from "../services/market-intelligence";
-import { SocialAnalyticsService } from "../services/social-analytics";
+import type { Provider, IAgentRuntime, Memory } from "@elizaos/core";
+import type { ReservoirService } from "../services/reservoir";
+import type { MarketIntelligenceService } from "../services/market-intelligence";
+import type { SocialAnalyticsService } from "../services/social-analytics";
 
 export const createNftCollectionProvider = (
     nftService: ReservoirService,

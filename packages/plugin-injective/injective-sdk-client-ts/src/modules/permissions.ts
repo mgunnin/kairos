@@ -1,7 +1,7 @@
-import { InjectiveGrpcBase } from "../grpc/grpc-base";
-import * as PermissionsType from "../types/permissions";
+import type { InjectiveGrpcBase } from "../grpc/grpc-base";
+import type * as PermissionsType from "../types/permissions";
 import {
-    StandardResponse,
+    type StandardResponse,
     createSuccessResponse,
     createErrorResponse,
 } from "../types/index";

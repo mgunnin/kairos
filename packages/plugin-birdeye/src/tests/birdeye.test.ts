@@ -1,5 +1,5 @@
-import { ICacheManager } from "@elizaos/core";
-import { afterEach, beforeEach, describe, expect, it, Mock, vi } from "vitest";
+import type { ICacheManager } from "@elizaos/core";
+import { afterEach, beforeEach, describe, expect, it, type Mock, vi } from "vitest";
 import { BirdeyeProvider } from "../birdeye";
 import {
     API_BASE_URL,

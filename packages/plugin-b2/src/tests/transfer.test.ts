@@ -4,7 +4,7 @@ import { getEnvVariable } from "@elizaos/core";
 
 import { TransferAction } from "../actions/transfer";
 import { WalletProvider } from "../providers";
-import { TransferParams } from "../types";
+import type { TransferParams } from "../types";
 import { TOKEN_ADDRESSES } from "../utils/constants";
 
 describe("Transfer Action", () => {

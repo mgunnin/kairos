@@ -1,4 +1,4 @@
-import { Plugin } from "@elizaos/core";
+import type { Plugin } from "@elizaos/core";
 import { TokenPriceAction } from "./actions/tokenAction";
 import { TokenPriceEvaluator } from "./evaluators/tokenEvaluator";
 import { TokenPriceProvider } from "./providers/tokenProvider";

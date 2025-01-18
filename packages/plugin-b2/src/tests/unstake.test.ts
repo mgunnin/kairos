@@ -3,7 +3,7 @@ import { generatePrivateKey } from "viem/accounts";
 
 import { UnstakeAction } from "../actions/unstake";
 import { WalletProvider } from "../providers";
-import { UnstakeParams } from "../types";
+import type { UnstakeParams } from "../types";
 
 describe("Unstake Action", () => {
     let wp: WalletProvider;

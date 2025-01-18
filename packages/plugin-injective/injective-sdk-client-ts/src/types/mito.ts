@@ -1,4 +1,4 @@
-import {
+import type {
     Coin,
     MitoVault,
     MitoPagination,
@@ -20,7 +20,7 @@ import {
     MitoWhitelistAccount,
     MitoClaimReference,
 } from "@injectivelabs/sdk-ts";
-import { PaginationParams, TimeRangeParams, AddressParams } from "./base";
+import type { PaginationParams, TimeRangeParams, AddressParams } from "./base";
 // Mito Module Params
 // Param interfaces
 

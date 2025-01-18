@@ -1,9 +1,9 @@
 import { elizaLogger } from "@elizaos/core";
-import { BirdeyeApiParams } from "./types/api/common";
-import { TokenMarketSearchResponse, TokenResult } from "./types/api/search";
-import { TokenMetadataSingleResponse } from "./types/api/token";
-import { WalletPortfolioResponse } from "./types/api/wallet";
-import { BaseAddress, BirdeyeSupportedChain } from "./types/shared";
+import type { BirdeyeApiParams } from "./types/api/common";
+import type { TokenMarketSearchResponse, TokenResult } from "./types/api/search";
+import type { TokenMetadataSingleResponse } from "./types/api/token";
+import type { WalletPortfolioResponse } from "./types/api/wallet";
+import type { BaseAddress, BirdeyeSupportedChain } from "./types/shared";
 
 // Constants
 export const BASE_URL = "https://public-api.birdeye.so";
@@ -220,7 +220,7 @@ export const extractTimeRange = (
     const timeRegex = /(\d+)\s*(second|minute|hour|day|week|month)s?\s*ago/i;
     const match = text.match(timeRegex);
     if (match) {
-        const amount = parseInt(match[1]);
+        const amount = Number.parseInt(match[1]);
         const unit = match[2].toLowerCase() as TimeUnit;
         const start = now - amount * TIME_UNITS[unit];
         return { start, end: now };
@@ -266,7 +266,7 @@ export const extractLimit = (text: string): number => {
         /\b(show|display|get|fetch|limit)\s+(\d+)\b/i
     );
     if (limitMatch) {
-        const limit = parseInt(limitMatch[2]);
+        const limit = Number.parseInt(limitMatch[2]);
         return Math.min(Math.max(limit, 1), 100); // Clamp between 1 and 100
     }
 

@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { MessageManager } from '../src/messages';
-import { WebClient } from '@slack/web-api';
-import { IAgentRuntime } from '@elizaos/core';
+import type { WebClient } from '@slack/web-api';
+import type { IAgentRuntime } from '@elizaos/core';
 
 // Mock dependencies
 vi.mock('@slack/web-api');

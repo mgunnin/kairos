@@ -1,4 +1,4 @@
-import { InjectiveGrpcBase } from "../grpc/grpc-base";
+import type { InjectiveGrpcBase } from "../grpc/grpc-base";
 import {
     MsgSubmitProposalExpiryFuturesMarketLaunch,
     MsgSubmitProposalSpotMarketLaunch,
@@ -8,11 +8,11 @@ import {
     MsgSubmitProposalSpotMarketParamUpdate,
     MsgSubmitGenericProposal,
     MsgGovDeposit,
-    TxResponse,
+    type TxResponse,
 } from "@injectivelabs/sdk-ts";
-import * as GovernanceTypes from "../types/gov";
+import type * as GovernanceTypes from "../types/gov";
 import {
-    StandardResponse,
+    type StandardResponse,
     createSuccessResponse,
     createErrorResponse,
 } from "../types/index";

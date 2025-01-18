@@ -1,6 +1,6 @@
 import {
-    IAgentRuntime,
-    IAwsS3Service,
+    type IAgentRuntime,
+    type IAwsS3Service,
     Service,
     ServiceType,
     elizaLogger,
@@ -28,8 +28,8 @@ export class AwsS3Service extends Service implements IAwsS3Service {
     static serviceType: ServiceType = ServiceType.AWS_S3;
 
     private s3Client: S3Client | null = null;
-    private bucket: string = "";
-    private fileUploadPath: string = "";
+    private bucket = "";
+    private fileUploadPath = "";
     private runtime: IAgentRuntime | null = null;
 
     async initialize(runtime: IAgentRuntime): Promise<void> {
@@ -81,9 +81,9 @@ export class AwsS3Service extends Service implements IAwsS3Service {
 
     async uploadFile(
         filePath: string,
-        subDirectory: string = "",
-        useSignedUrl: boolean = false,
-        expiresIn: number = 900
+        subDirectory = "",
+        useSignedUrl = false,
+        expiresIn = 900
     ): Promise<UploadResult> {
         try {
             if (!(await this.initializeS3Client())) {
@@ -159,7 +159,7 @@ export class AwsS3Service extends Service implements IAwsS3Service {
      */
     async generateSignedUrl(
         fileName: string,
-        expiresIn: number = 900
+        expiresIn = 900
     ): Promise<string> {
         if (!(await this.initializeS3Client())) {
             throw new Error("AWS S3 credentials not configured");
@@ -197,8 +197,8 @@ export class AwsS3Service extends Service implements IAwsS3Service {
         jsonData: any,
         fileName?: string,
         subDirectory?: string,
-        useSignedUrl: boolean = false,
-        expiresIn: number = 900
+        useSignedUrl = false,
+        expiresIn = 900
     ): Promise<JsonUploadResult> {
         try {
             if (!(await this.initializeS3Client())) {

@@ -1,4 +1,4 @@
-import type { Token } from "@lifi/types";
+import type { Route, Token } from "@lifi/types";
 import type {
     Account,
     Address,
@@ -75,6 +75,23 @@ export interface SwapParams {
     toToken: Address;
     amount: string;
     slippage?: number;
+}
+
+export interface BebopRoute {
+    data: string;
+    approvalTarget: Address;
+    sellAmount: string;
+    from: Address;
+    to: Address;
+    value: string;
+    gas: string;
+    gasPrice: string;
+}
+
+export interface SwapQuote {
+    aggregator: "lifi" | "bebop";
+    minOutputAmount: string;
+    swapData: Route | BebopRoute;
 }
 
 export interface BridgeParams {

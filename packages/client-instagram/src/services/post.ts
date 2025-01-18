@@ -1,6 +1,6 @@
 // src/services/post.ts
 import {
-    IAgentRuntime,
+    type IAgentRuntime,
     ModelClass,
     composeContext,
     elizaLogger,
@@ -13,7 +13,7 @@ import { promises as fs } from "fs";
 import path from "path";
 import sharp from "sharp";
 import { getIgClient } from "../lib/state";
-import { InstagramState } from "../types";
+import type { InstagramState } from "../types";
 
 // Template for generating Instagram posts
 const instagramPostTemplate = `
@@ -48,9 +48,9 @@ interface PostOptions {
 export class InstagramPostService {
     private runtime: IAgentRuntime;
     private state: InstagramState;
-    private isProcessing: boolean = false;
-    private lastPostTime: number = 0;
-    private stopProcessing: boolean = false;
+    private isProcessing = false;
+    private lastPostTime = 0;
+    private stopProcessing = false;
 
     constructor(runtime: IAgentRuntime, state: InstagramState) {
         this.runtime = runtime;
@@ -64,11 +64,11 @@ export class InstagramPostService {
             }>("instagram/lastPost");
 
             const lastPostTimestamp = lastPost?.timestamp ?? 0;
-            const minMinutes = parseInt(
+            const minMinutes = Number.parseInt(
                 this.runtime.getSetting("POST_INTERVAL_MIN") || "90",
                 10
             );
-            const maxMinutes = parseInt(
+            const maxMinutes = Number.parseInt(
                 this.runtime.getSetting("POST_INTERVAL_MAX") || "180",
                 10
             );

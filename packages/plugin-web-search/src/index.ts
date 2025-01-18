@@ -1,5 +1,5 @@
 import { webSearch } from "./actions/webSearch";
-import { Plugin } from "@elizaos/core";
+import type { Plugin } from "@elizaos/core";
 import { WebSearchService } from "./services/webSearchService";
 
 export const webSearchPlugin: Plugin = {

@@ -1,11 +1,11 @@
-import { Database } from "better-sqlite3";
+import type { Database } from "better-sqlite3";
 import { v4 as uuidv4 } from "uuid";
 import {
-    VerifiableLog,
-    VerifiableAgent,
+    type VerifiableLog,
+    type VerifiableAgent,
     VerifiableDAO,
-    VerifiableLogQuery,
-    PageQuery,
+    type VerifiableLogQuery,
+    type PageQuery,
 } from "../types/logTypes.ts";
 
 export class SQLite3VerifiableDAO extends VerifiableDAO<Database> {

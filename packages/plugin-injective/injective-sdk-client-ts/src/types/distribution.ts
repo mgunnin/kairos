@@ -1,7 +1,7 @@
 // Distribution Module Params
 // Start of Get Distribution Module Parameters
 
-import {
+import type {
     DistributionModuleParams,
     ValidatorRewards,
     Coin,

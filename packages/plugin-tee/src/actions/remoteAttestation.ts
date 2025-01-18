@@ -1,7 +1,7 @@
 import type { IAgentRuntime, Memory, State, HandlerCallback } from "@elizaos/core";
 import { RemoteAttestationProvider } from "../providers/remoteAttestationProvider";
 import { fetch, type BodyInit } from "undici";
-import { RemoteAttestationMessage } from "../types/tee";
+import type { RemoteAttestationMessage } from "../types/tee";
 
 function hexToUint8Array(hex: string) {
     hex = hex.trim();
@@ -17,7 +17,7 @@ function hexToUint8Array(hex: string) {
 
     const array = new Uint8Array(hex.length / 2);
     for (let i = 0; i < hex.length; i += 2) {
-      const byte = parseInt(hex.slice(i, i + 2), 16);
+      const byte = Number.parseInt(hex.slice(i, i + 2), 16);
       if (isNaN(byte)) {
         throw new Error("Invalid hex string");
       }

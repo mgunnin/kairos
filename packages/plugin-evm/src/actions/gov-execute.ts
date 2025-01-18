@@ -4,8 +4,8 @@ import { executeProposalTemplate } from "../templates";
 import type { ExecuteProposalParams, Transaction } from "../types";
 import governorArtifacts from "../contracts/artifacts/OZGovernor.json";
 import {
-    ByteArray,
-    Hex,
+    type ByteArray,
+    type Hex,
     encodeFunctionData,
     keccak256,
     stringToHex,
@@ -51,13 +51,13 @@ export class ExecuteAction {
                 data: txData as Hex,
                 chain: chainConfig,
                 kzg: {
-                    blobToKzgCommitment: function (_blob: ByteArray): ByteArray {
+                    blobToKzgCommitment: (_blob: ByteArray): ByteArray => {
                         throw new Error("Function not implemented.");
                     },
-                    computeBlobKzgProof: function (
+                    computeBlobKzgProof: (
                         _blob: ByteArray,
                         _commitment: ByteArray
-                    ): ByteArray {
+                    ): ByteArray => {
                         throw new Error("Function not implemented.");
                     },
                 },

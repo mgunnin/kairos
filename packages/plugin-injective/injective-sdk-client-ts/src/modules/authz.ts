@@ -1,8 +1,8 @@
-import { InjectiveGrpcBase } from "../grpc/grpc-base";
+import type { InjectiveGrpcBase } from "../grpc/grpc-base";
 import { MsgGrant, MsgRevoke, MsgAuthzExec } from "@injectivelabs/sdk-ts";
-import * as AuthzTypes from "../types/auth";
+import type * as AuthzTypes from "../types/auth";
 import {
-    StandardResponse,
+    type StandardResponse,
     createSuccessResponse,
     createErrorResponse,
 } from "../types/index";

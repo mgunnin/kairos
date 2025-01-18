@@ -1,6 +1,6 @@
-import { PaginationOption, Pagination, Coin } from "@injectivelabs/sdk-ts";
-import { CosmosBaseV1Beta1Coin } from "@injectivelabs/core-proto-ts";
-import { DenomParam } from "./base";
+import type { PaginationOption, Pagination, Coin } from "@injectivelabs/sdk-ts";
+import type { CosmosBaseV1Beta1Coin } from "@injectivelabs/core-proto-ts";
+import type { DenomParam } from "./base";
 // Bank Module Params
 // Start of Get Bank Request Parameters
 export interface GetBankBalanceParams {

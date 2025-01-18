@@ -1,4 +1,4 @@
-import { Readable } from "stream";
+import type { Readable } from "stream";
 
 /**
  * Represents a UUID string in the format "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
@@ -1394,13 +1394,13 @@ export interface GraphQLTag {
     values: any[];
 }
 
-export const enum IrysMessageType {
+export enum IrysMessageType {
     REQUEST = "REQUEST",
     DATA_STORAGE = "DATA_STORAGE",
     REQUEST_RESPONSE = "REQUEST_RESPONSE",
 }
 
-export const enum IrysDataType {
+export enum IrysDataType {
     FILE = "FILE",
     IMAGE = "IMAGE",
     OTHER = "OTHER",

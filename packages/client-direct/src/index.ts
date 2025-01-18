@@ -1,26 +1,26 @@
 import bodyParser from "body-parser";
 import cors from "cors";
-import express, { Request as ExpressRequest } from "express";
+import express, { type Request as ExpressRequest } from "express";
 import multer from "multer";
 import { z } from "zod";
 import {
-    AgentRuntime,
+    type AgentRuntime,
     elizaLogger,
     messageCompletionFooter,
     generateCaption,
     generateImage,
-    Media,
+    type Media,
     getEmbeddingZeroVector,
     composeContext,
     generateMessageResponse,
     generateObject,
-    Content,
-    Memory,
+    type Content,
+    type Memory,
     ModelClass,
-    Client,
+    type Client,
     stringToUuid,
     settings,
-    IAgentRuntime,
+    type IAgentRuntime,
 } from "@elizaos/core";
 import { createApiRouter } from "./api.ts";
 import * as fs from "fs";
@@ -853,14 +853,14 @@ export class DirectClient {
                             process.env.ELEVENLABS_MODEL_ID ||
                             "eleven_multilingual_v2",
                         voice_settings: {
-                            stability: parseFloat(
+                            stability: Number.parseFloat(
                                 process.env.ELEVENLABS_VOICE_STABILITY || "0.5"
                             ),
-                            similarity_boost: parseFloat(
+                            similarity_boost: Number.parseFloat(
                                 process.env.ELEVENLABS_VOICE_SIMILARITY_BOOST ||
                                     "0.9"
                             ),
-                            style: parseFloat(
+                            style: Number.parseFloat(
                                 process.env.ELEVENLABS_VOICE_STYLE || "0.66"
                             ),
                             use_speaker_boost:
@@ -927,14 +927,14 @@ export class DirectClient {
                             process.env.ELEVENLABS_MODEL_ID ||
                             "eleven_multilingual_v2",
                         voice_settings: {
-                            stability: parseFloat(
+                            stability: Number.parseFloat(
                                 process.env.ELEVENLABS_VOICE_STABILITY || "0.5"
                             ),
-                            similarity_boost: parseFloat(
+                            similarity_boost: Number.parseFloat(
                                 process.env.ELEVENLABS_VOICE_SIMILARITY_BOOST ||
                                     "0.9"
                             ),
-                            style: parseFloat(
+                            style: Number.parseFloat(
                                 process.env.ELEVENLABS_VOICE_STYLE || "0.66"
                             ),
                             use_speaker_boost:
@@ -1025,7 +1025,7 @@ export const DirectClientInterface: Client = {
     start: async (_runtime: IAgentRuntime) => {
         elizaLogger.log("DirectClientInterface start");
         const client = new DirectClient();
-        const serverPort = parseInt(settings.SERVER_PORT || "3000");
+        const serverPort = Number.parseInt(settings.SERVER_PORT || "3000");
         client.start(serverPort);
         return client;
     },

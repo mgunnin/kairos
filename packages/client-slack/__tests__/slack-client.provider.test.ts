@@ -1,7 +1,7 @@
 import { describe, expect, test, beforeEach, vi } from "vitest";
 import { SlackClientProvider } from "../src/providers/slack-client.provider";
-import { SlackConfig } from "../src/types/slack-types";
-import { WebClient } from "@slack/web-api";
+import type { SlackConfig } from "../src/types/slack-types";
+import type { WebClient } from "@slack/web-api";
 import type {
     AuthTestResponse,
     ChatPostMessageResponse,

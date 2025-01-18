@@ -1,4 +1,4 @@
-import { Plugin } from "@elizaos/core";
+import type { Plugin } from "@elizaos/core";
 import getMarkets from "./actions/getMarkets";
 import getPrice from "./actions/getPrice";
 import getPricePerAddress from "./actions/getPricePerAddress";

@@ -53,7 +53,7 @@ export class NFTErrorFactory {
         code: ErrorCode,
         message: string,
         details?: Record<string, unknown>,
-        retryable: boolean = false
+        retryable = false
     ): NFTError {
         return ErrorSchema.parse({
             type,
@@ -169,7 +169,7 @@ export function shouldRetry(
 
 export function getRetryDelay(
     attempt: number,
-    baseDelay: number = 1000
+    baseDelay = 1000
 ): number {
     return Math.min(baseDelay * Math.pow(2, attempt), 30000); // Max 30 seconds
 }

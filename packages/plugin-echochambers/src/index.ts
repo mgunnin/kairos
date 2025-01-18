@@ -1,7 +1,7 @@
-import { elizaLogger, Client, IAgentRuntime, Plugin } from "@elizaos/core";
+import { elizaLogger, type Client, type IAgentRuntime, type Plugin } from "@elizaos/core";
 import { EchoChamberClient } from "./echoChamberClient";
 import { InteractionClient } from "./interactions";
-import { EchoChamberConfig } from "./types";
+import type { EchoChamberConfig } from "./types";
 import { validateEchoChamberConfig } from "./environment";
 
 export const EchoChamberClientInterface: Client = {

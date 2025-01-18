@@ -4,18 +4,18 @@ import {
     generateShouldRespond,
     messageCompletionFooter,
     shouldRespondFooter,
-    Content,
-    HandlerCallback,
-    IAgentRuntime,
-    Memory,
+    type Content,
+    type HandlerCallback,
+    type IAgentRuntime,
+    type Memory,
     ModelClass,
     State,
     stringToUuid,
     elizaLogger,
     getEmbeddingZeroVector,
 } from "@elizaos/core";
-import { EchoChamberClient } from "./echoChamberClient";
-import { ChatMessage, ChatRoom } from "./types";
+import type { EchoChamberClient } from "./echoChamberClient";
+import type { ChatMessage, ChatRoom } from "./types";
 
 function createMessageTemplate(currentRoom: string, roomTopic: string) {
     return (

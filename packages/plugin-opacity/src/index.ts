@@ -1,7 +1,7 @@
 import {
-    IVerifiableInferenceAdapter,
-    VerifiableInferenceOptions,
-    VerifiableInferenceResult,
+    type IVerifiableInferenceAdapter,
+    type VerifiableInferenceOptions,
+    type VerifiableInferenceResult,
     VerifiableInferenceProvider,
     ModelProviderName,
     models,

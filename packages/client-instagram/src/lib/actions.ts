@@ -1,6 +1,6 @@
 // src/lib/actions.ts
 import { elizaLogger } from "@elizaos/core";
-import { Comment } from "../types";
+import type { Comment } from "../types";
 import { getIgClient } from "./state";
 
 /**
@@ -8,7 +8,7 @@ import { getIgClient } from "./state";
  */
 export async function fetchComments(
   mediaId: string,
-  count: number = 20
+  count = 20
 ): Promise<Comment[]> {
   const ig = getIgClient();
 

@@ -1,4 +1,4 @@
-import { InjectiveGrpcBase } from "../grpc/grpc-base";
+import type { InjectiveGrpcBase } from "../grpc/grpc-base";
 import {
     MsgStoreCode,
     MsgUpdateAdmin,
@@ -8,9 +8,9 @@ import {
     MsgExecuteContractCompat,
     MsgPrivilegedExecuteContract,
 } from "@injectivelabs/sdk-ts";
-import * as WasmTypes from "../types/wasm";
+import type * as WasmTypes from "../types/wasm";
 import {
-    StandardResponse,
+    type StandardResponse,
     createSuccessResponse,
     createErrorResponse,
 } from "../types/index";

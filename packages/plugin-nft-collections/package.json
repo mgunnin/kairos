@@ -9,7 +9,6 @@
         "build": "tsup src/index.ts --format esm --dts",
         "test": "vitest run",
         "test:watch": "vitest",
-        "lint": "eslint --fix --cache .",
         "format": "prettier --write src/**/*.ts"
     },
     "dependencies": {

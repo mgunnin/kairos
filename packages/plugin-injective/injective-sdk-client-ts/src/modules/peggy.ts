@@ -1,12 +1,12 @@
-import { InjectiveGrpcBase } from "../grpc/grpc-base";
+import type { InjectiveGrpcBase } from "../grpc/grpc-base";
 import {
     PeggyModuleParams,
     MsgSendToEth,
-    TxResponse,
+    type TxResponse,
 } from "@injectivelabs/sdk-ts";
-import { MsgSendToEthParams } from "../types/peggy";
+import type { MsgSendToEthParams } from "../types/peggy";
 import {
-    StandardResponse,
+    type StandardResponse,
     createSuccessResponse,
     createErrorResponse,
 } from "../types/index";

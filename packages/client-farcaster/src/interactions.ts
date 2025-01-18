@@ -2,18 +2,18 @@ import {
     composeContext,
     generateMessageResponse,
     generateShouldRespond,
-    Memory,
+    type Memory,
     ModelClass,
     stringToUuid,
     elizaLogger,
-    HandlerCallback,
-    Content,
+    type HandlerCallback,
+    type Content,
     type IAgentRuntime,
 } from "@elizaos/core";
 import type { FarcasterClient } from "./client";
 import { toHex } from "viem";
 import { buildConversationThread, createCastMemory } from "./memory";
-import { Cast, Profile } from "./types";
+import type { Cast, Profile } from "./types";
 import {
     formatCast,
     formatTimeline,

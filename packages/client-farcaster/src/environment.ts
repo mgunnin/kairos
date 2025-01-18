@@ -1,6 +1,6 @@
 import {
     parseBooleanFromText,
-    IAgentRuntime,
+    type IAgentRuntime,
     ActionTimelineType,
 } from "@elizaos/core";
 import { z, ZodError } from "zod";
@@ -36,7 +36,7 @@ function safeParseInt(
     defaultValue: number
 ): number {
     if (!value) return defaultValue;
-    const parsed = parseInt(value, 10);
+    const parsed = Number.parseInt(value, 10);
     return Number.isNaN(parsed) ? defaultValue : Math.max(1, parsed);
 }
 

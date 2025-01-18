@@ -1,11 +1,11 @@
-import {
+import type {
     Account,
     Actor,
     GoalStatus,
-    type Goal,
-    type Memory,
-    type Relationship,
-    type UUID,
+    Goal,
+    Memory,
+    Relationship,
+    UUID,
     RAGKnowledgeItem,
     Participant,
     IDatabaseAdapter,

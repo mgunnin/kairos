@@ -1,4 +1,4 @@
-import { InjectiveGrpcBase } from "../grpc/grpc-base";
+import type { InjectiveGrpcBase } from "../grpc/grpc-base";
 import {
     BinaryOptionsMarket,
     DerivativeLimitOrder,
@@ -8,12 +8,12 @@ import {
     DerivativeTrade,
     FundingPayment,
     FundingRate,
-    ExchangePagination,
+    type ExchangePagination,
     SubaccountTransfer,
     SpotLimitOrder,
     SpotOrderHistory,
     SpotTrade,
-    AtomicSwap,
+    type AtomicSwap,
     MsgAdminUpdateBinaryOptionsMarket,
     MsgBatchCancelBinaryOptionsOrders,
     MsgBatchCancelDerivativeOrders,
@@ -38,9 +38,9 @@ import {
     MsgWithdraw,
     MsgExternalTransfer,
 } from "@injectivelabs/sdk-ts";
-import * as ExchangeTypes from "../types/exchange";
+import type * as ExchangeTypes from "../types/exchange";
 import {
-    StandardResponse,
+    type StandardResponse,
     createSuccessResponse,
     createErrorResponse,
 } from "../types/index";

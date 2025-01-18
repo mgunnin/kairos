@@ -5,7 +5,7 @@ import type { Database as DatabaseType } from "better-sqlite3";
 import { v4 as uuidv4 } from "uuid";
 import os from "os";
 import path from "path";
-import {
+import type {
     VerifiableAgent,
     VerifiableLog,
     VerifiableLogQuery,

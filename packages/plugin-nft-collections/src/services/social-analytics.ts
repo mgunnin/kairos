@@ -1,6 +1,6 @@
-import { MemoryCacheManager } from "./cache-manager";
-import { RateLimiter } from "./rate-limiter";
-import { SocialMetrics } from "../utils/validation";
+import type { MemoryCacheManager } from "./cache-manager";
+import type { RateLimiter } from "./rate-limiter";
+import type { SocialMetrics } from "../utils/validation";
 
 interface SocialAnalyticsConfig {
     cacheManager?: MemoryCacheManager;

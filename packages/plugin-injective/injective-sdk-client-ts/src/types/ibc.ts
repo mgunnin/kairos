@@ -1,6 +1,6 @@
-import { PaginationOption } from "@injectivelabs/sdk-ts";
-import { DenomTrace } from "@injectivelabs/core-proto-ts/cjs/ibc/applications/transfer/v1/transfer.js";
-import { PaginationParams } from "./base";
+import type { PaginationOption } from "@injectivelabs/sdk-ts";
+import type { DenomTrace } from "@injectivelabs/core-proto-ts/cjs/ibc/applications/transfer/v1/transfer.js";
+import type { PaginationParams } from "./base";
 //IBC params
 export interface GetDenomTraceParams {
     hash: string;

@@ -1,4 +1,4 @@
-import {
+import type {
     PaginationOption,
     Pagination,
     Msgs,
@@ -8,8 +8,8 @@ import {
     Vote,
     TallyResult,
 } from "@injectivelabs/sdk-ts";
-import { PaginationParams } from "./base";
-import {
+import type { PaginationParams } from "./base";
+import type {
     CosmosGovV1Gov,
     InjectiveExchangeV1Beta1Exchange,
     InjectiveOracleV1Beta1Oracle,

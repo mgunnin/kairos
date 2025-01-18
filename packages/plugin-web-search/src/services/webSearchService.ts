@@ -1,12 +1,12 @@
 import {
     Service,
-    IAgentRuntime,
+    type IAgentRuntime,
     ServiceType,
 } from "@elizaos/core";
 import { tavily } from "@tavily/core";
-import { IWebSearchService, SearchOptions, SearchResponse } from "../types";
+import type { IWebSearchService, SearchOptions, SearchResponse } from "../types";
 
-export type TavilyClient = ReturnType<typeof tavily>; // declaring manually because orginal package does not export its types
+export type TavilyClient = ReturnType<typeof tavily>; // declaring manually because original package does not export its types
 
 export class WebSearchService extends Service implements IWebSearchService {
     public tavilyClient: TavilyClient

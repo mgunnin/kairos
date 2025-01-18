@@ -1,5 +1,5 @@
 import { IgApiClient } from 'instagram-private-api';
-import { InstagramState } from '../types';
+import type { InstagramState } from '../types';
 
 // Create a singleton for the Instagram API client
 let igClient: IgApiClient | null = null;

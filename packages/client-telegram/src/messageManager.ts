@@ -1,5 +1,5 @@
-import { Message } from "@telegraf/types";
-import { Context, Telegraf } from "telegraf";
+import type { Message } from "@telegraf/types";
+import type { Context, Telegraf } from "telegraf";
 import {
     composeContext,
     elizaLogger,
@@ -8,15 +8,15 @@ import {
 } from "@elizaos/core";
 import { getEmbeddingZeroVector } from "@elizaos/core";
 import {
-    Content,
-    HandlerCallback,
-    IAgentRuntime,
-    IImageDescriptionService,
-    Memory,
+    type Content,
+    type HandlerCallback,
+    type IAgentRuntime,
+    type IImageDescriptionService,
+    type Memory,
     ModelClass,
-    State,
-    UUID,
-    Media,
+    type State,
+    type UUID,
+    type Media,
 } from "@elizaos/core";
 import { stringToUuid } from "@elizaos/core";
 import { generateMessageResponse, generateShouldRespond } from "@elizaos/core";

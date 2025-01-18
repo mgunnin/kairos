@@ -1,5 +1,5 @@
 import {
-    IAgentRuntime,
+    type IAgentRuntime,
     parseBooleanFromText,
 } from "@elizaos/core";
 import { z } from "zod";
@@ -75,14 +75,14 @@ export async function validateInstagramConfig(
             INSTAGRAM_BUSINESS_ACCOUNT_ID: runtime.getSetting("INSTAGRAM_BUSINESS_ACCOUNT_ID") ||
                 process.env.INSTAGRAM_BUSINESS_ACCOUNT_ID,
 
-            INSTAGRAM_POST_INTERVAL_MIN: parseInt(
+            INSTAGRAM_POST_INTERVAL_MIN: Number.parseInt(
                 runtime.getSetting("INSTAGRAM_POST_INTERVAL_MIN") ||
                     process.env.INSTAGRAM_POST_INTERVAL_MIN ||
                     DEFAULT_POST_INTERVAL_MIN.toString(),
                 10
             ),
 
-            INSTAGRAM_POST_INTERVAL_MAX: parseInt(
+            INSTAGRAM_POST_INTERVAL_MAX: Number.parseInt(
                 runtime.getSetting("INSTAGRAM_POST_INTERVAL_MAX") ||
                     process.env.INSTAGRAM_POST_INTERVAL_MAX ||
                     DEFAULT_POST_INTERVAL_MAX.toString(),
@@ -94,14 +94,14 @@ export async function validateInstagramConfig(
                     process.env.INSTAGRAM_ENABLE_ACTION_PROCESSING
             ) ?? false,
 
-            INSTAGRAM_ACTION_INTERVAL: parseInt(
+            INSTAGRAM_ACTION_INTERVAL: Number.parseInt(
                 runtime.getSetting("INSTAGRAM_ACTION_INTERVAL") ||
                     process.env.INSTAGRAM_ACTION_INTERVAL ||
                     DEFAULT_ACTION_INTERVAL.toString(),
                 10
             ),
 
-            INSTAGRAM_MAX_ACTIONS: parseInt(
+            INSTAGRAM_MAX_ACTIONS: Number.parseInt(
                 runtime.getSetting("MAX_ACTIONS_PROCESSING") ||
                     process.env.MAX_ACTIONS_PROCESSING ||
                     DEFAULT_MAX_ACTIONS.toString(),

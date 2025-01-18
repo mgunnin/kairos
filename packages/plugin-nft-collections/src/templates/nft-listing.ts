@@ -1,4 +1,4 @@
-import { NFTCollection } from "../types";
+import type { NFTCollection } from "../types";
 
 export const listingTemplates = {
     successfulListing: ({

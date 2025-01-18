@@ -44,7 +44,7 @@ export class MemoryCacheManager {
         return entry.data;
     }
 
-    async set<T>(key: string, value: T, priority: number = 0): Promise<void> {
+    async set<T>(key: string, value: T, priority = 0): Promise<void> {
         const ttl = this.getExpirationTime(key);
         const entry: CacheEntry<T> = {
             data: value,

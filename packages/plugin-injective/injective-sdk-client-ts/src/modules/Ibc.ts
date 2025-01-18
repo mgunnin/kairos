@@ -1,9 +1,9 @@
-import { InjectiveGrpcBase } from "../grpc/grpc-base.js";
+import type { InjectiveGrpcBase } from "../grpc/grpc-base.js";
 import { PaginationOption } from "@injectivelabs/ts-types";
-import { MsgTransfer, TxResponse } from "@injectivelabs/sdk-ts";
-import * as IBCTypes from "../types/ibc"; // Assuming IBC types are in ibc.ts
+import { MsgTransfer, type TxResponse } from "@injectivelabs/sdk-ts";
+import type * as IBCTypes from "../types/ibc"; // Assuming IBC types are in ibc.ts
 import {
-    StandardResponse,
+    type StandardResponse,
     createSuccessResponse,
     createErrorResponse,
 } from "../types/index";

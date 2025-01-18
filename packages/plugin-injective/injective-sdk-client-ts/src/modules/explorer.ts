@@ -1,7 +1,7 @@
-import { InjectiveGrpcBase } from "../grpc/grpc-base";
-import * as ExplorerTypes from "../types/explorer";
+import type { InjectiveGrpcBase } from "../grpc/grpc-base";
+import type * as ExplorerTypes from "../types/explorer";
 import {
-    StandardResponse,
+    type StandardResponse,
     createSuccessResponse,
     createErrorResponse,
 } from "../types/index";

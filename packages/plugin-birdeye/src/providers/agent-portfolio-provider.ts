@@ -1,4 +1,4 @@
-import { IAgentRuntime, Memory, Provider, State } from "@elizaos/core";
+import type { IAgentRuntime, Memory, Provider, State } from "@elizaos/core";
 import { BirdeyeProvider } from "../birdeye";
 import { extractChain, formatPortfolio } from "../utils";
 

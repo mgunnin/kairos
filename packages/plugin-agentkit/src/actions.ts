@@ -9,7 +9,7 @@ import {
     composeContext,
     generateObject,
 } from "@elizaos/core";
-import { CdpAgentkit } from "@coinbase/cdp-agentkit-core";
+import type { CdpAgentkit } from "@coinbase/cdp-agentkit-core";
 import { CdpToolkit, type Tool } from "@coinbase/cdp-langchain";
 
 type GetAgentKitActionsParams = {

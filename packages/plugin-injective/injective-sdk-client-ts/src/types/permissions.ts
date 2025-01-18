@@ -1,9 +1,9 @@
-import {
+import type {
     Coin,
     PermissionsModuleParams,
     Namespace,
 } from "@injectivelabs/sdk-ts";
-import { AddressParams } from "./base";
+import type { AddressParams } from "./base";
 
 // Base parameter interfaces
 // Permissions Module Params

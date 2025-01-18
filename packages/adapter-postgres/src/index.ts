@@ -5,13 +5,13 @@ import pg from "pg";
 type Pool = pg.Pool;
 
 import {
-    Account,
-    Actor,
+    type Account,
+    type Actor,
     DatabaseAdapter,
     EmbeddingProvider,
-    GoalStatus,
-    Participant,
-    RAGKnowledgeItem,
+    type GoalStatus,
+    type Participant,
+    type RAGKnowledgeItem,
     elizaLogger,
     getEmbeddingConfig,
     type Goal,
@@ -22,7 +22,7 @@ import {
 } from "@elizaos/core";
 import fs from "fs";
 import path from "path";
-import {
+import type {
     QueryConfig,
     QueryConfigValues,
     QueryResult,
@@ -1323,7 +1323,7 @@ export class PostgresDatabaseAdapter
             }
 
             const { rows } = await this.pool.query(sql, [tableName, roomId]);
-            return parseInt(rows[0].count);
+            return Number.parseInt(rows[0].count);
         }, "countMemories");
     }
 

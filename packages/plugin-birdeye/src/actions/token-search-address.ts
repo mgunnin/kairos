@@ -1,20 +1,20 @@
 import {
-    Action,
-    ActionExample,
+    type Action,
+    type ActionExample,
     elizaLogger,
     formatTimestamp,
-    IAgentRuntime,
-    Memory,
-    State,
+    type IAgentRuntime,
+    type Memory,
+    type State,
 } from "@elizaos/core";
 import { BirdeyeProvider } from "../birdeye";
-import {
+import type {
     TokenMarketDataResponse,
     TokenOverviewResponse,
     TokenSecurityResponse,
     TokenTradeDataSingleResponse,
 } from "../types/api/token";
-import { BaseAddress } from "../types/shared";
+import type { BaseAddress } from "../types/shared";
 import {
     extractAddresses,
     formatPercentChange,

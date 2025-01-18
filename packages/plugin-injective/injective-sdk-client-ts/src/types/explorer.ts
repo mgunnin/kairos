@@ -1,4 +1,4 @@
-import {
+import type {
     Transaction,
     ExplorerValidator,
     ValidatorUptime,
@@ -8,8 +8,8 @@ import {
     ExplorerStats,
     ExchangePagination,
 } from "@injectivelabs/sdk-ts";
-import { InjectiveExplorerRpc } from "@injectivelabs/indexer-proto-ts";
-import { TimeRangeParams } from "./base";
+import type { InjectiveExplorerRpc } from "@injectivelabs/indexer-proto-ts";
+import type { TimeRangeParams } from "./base";
 /// Explorer Module Params
 export interface GetTxByHashParams {
     hash: string;

@@ -1,8 +1,8 @@
 // src/lib/auth.ts
-import { IAgentRuntime, elizaLogger } from "@elizaos/core";
+import { type IAgentRuntime, elizaLogger } from "@elizaos/core";
 import { IgLoginTwoFactorRequiredError } from "instagram-private-api";
-import { InstagramConfig } from "../environment";
-import { InstagramState } from "../types";
+import type { InstagramConfig } from "../environment";
+import type { InstagramState } from "../types";
 import { fetchProfile } from "./profile";
 import { createInitialState, getIgClient } from "./state";
 

@@ -1,4 +1,4 @@
-import { BirdeyeSupportedChain } from "../shared";
+import type { BirdeyeSupportedChain } from "../shared";
 
 // Search Types
 export interface TokenMarketSearchParams {

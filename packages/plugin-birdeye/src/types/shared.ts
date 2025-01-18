@@ -1,4 +1,4 @@
-import { BIRDEYE_SUPPORTED_CHAINS } from "../utils";
+import type { BIRDEYE_SUPPORTED_CHAINS } from "../utils";
 
 // Types
 export type BirdeyeSupportedChain = (typeof BIRDEYE_SUPPORTED_CHAINS)[number];

@@ -1,10 +1,10 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { GitHubClient, GitHubClientInterface } from '../src';
-import { AgentRuntime, IAgentRuntime } from '@elizaos/core';
+import type { AgentRuntime, IAgentRuntime } from '@elizaos/core';
 import { Octokit } from '@octokit/rest';
 import simpleGit from 'simple-git';
-import fs from 'fs';
-import fsPromises from 'fs/promises';
+import type fs from 'fs';
+import type fsPromises from 'fs/promises';
 
 // Mock external dependencies
 vi.mock('@octokit/rest', () => ({

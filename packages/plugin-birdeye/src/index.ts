@@ -1,4 +1,4 @@
-import { Plugin } from "@elizaos/core";
+import type { Plugin } from "@elizaos/core";
 import { tokenSearchAddressAction } from "./actions/token-search-address";
 import { tokenSearchSymbolAction } from "./actions/token-search-symbol";
 import { walletSearchAddressAction } from "./actions/wallet-search-address";

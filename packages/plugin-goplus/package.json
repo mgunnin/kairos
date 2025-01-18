@@ -11,8 +11,7 @@
     },
     "scripts": {
         "build": "tsup --format esm --dts",
-        "dev": "tsx watch src/index.ts",
-        "lint": "eslint --fix  --cache ."
+        "dev": "tsx watch src/index.ts"
     },
     "devDependencies": {
         "@types/ws": "^8.5.13",

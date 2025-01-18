@@ -1,4 +1,4 @@
-import { TimeInterval } from "./common";
+import type { TimeInterval } from "./common";
 
 // Network Types
 export interface DefiNetworksResponse {

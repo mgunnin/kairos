@@ -2,22 +2,22 @@ export * from "./sqliteTables.ts";
 export * from "./types.ts";
 
 import {
-    Account,
-    Actor,
+    type Account,
+    type Actor,
     DatabaseAdapter,
-    GoalStatus,
-    IDatabaseCacheAdapter,
-    Participant,
+    type GoalStatus,
+    type IDatabaseCacheAdapter,
+    type Participant,
     type Goal,
     type Memory,
     type Relationship,
     type UUID,
-    RAGKnowledgeItem,
+    type RAGKnowledgeItem,
     elizaLogger,
 } from "@elizaos/core";
 import { v4 } from "uuid";
 import { sqliteTables } from "./sqliteTables.ts";
-import { Database } from "./types.ts";
+import type { Database } from "./types.ts";
 
 export class SqlJsDatabaseAdapter
     extends DatabaseAdapter<Database>

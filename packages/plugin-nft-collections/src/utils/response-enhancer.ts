@@ -1,5 +1,5 @@
-import { State } from "@elizaos/core";
-import { NFTKnowledge } from "../types";
+import type { State } from "@elizaos/core";
+import type { NFTKnowledge } from "../types";
 
 export function enhanceResponse(response: string, state: State): string {
     const nftKnowledge = state.nftKnowledge as NFTKnowledge;

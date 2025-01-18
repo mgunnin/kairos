@@ -1,5 +1,5 @@
 // src/index.ts
-import { Client, IAgentRuntime, elizaLogger } from "@elizaos/core";
+import { type Client, type IAgentRuntime, elizaLogger } from "@elizaos/core";
 import { validateInstagramConfig } from "./environment";
 import { initializeClient } from "./lib/auth";
 import { InstagramInteractionService } from "./services/interaction";

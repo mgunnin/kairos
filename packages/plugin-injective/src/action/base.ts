@@ -1,11 +1,11 @@
 // createGenericAction.ts
-import { ActionExample } from "@elizaos/core";
+import type { ActionExample } from "@elizaos/core";
 import {
-    HandlerCallback,
-    IAgentRuntime,
-    Memory,
+    type HandlerCallback,
+    type IAgentRuntime,
+    type Memory,
     ModelClass,
-    State,
+    type State,
     elizaLogger,
     composeContext,
     type Action,

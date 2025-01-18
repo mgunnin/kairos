@@ -1,4 +1,4 @@
-import { Evaluator, IAgentRuntime, Memory, State } from "@elizaos/core";
+import type { Evaluator, IAgentRuntime, Memory, State } from "@elizaos/core";
 
 export class TokenPriceEvaluator implements Evaluator {
     name = "TOKEN_PRICE_EVALUATOR";

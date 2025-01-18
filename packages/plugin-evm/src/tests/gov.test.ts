@@ -1,14 +1,14 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { generatePrivateKey } from "viem/accounts";
 import {
-    Address,
-    Chain,
+    type Address,
+    type Chain,
     encodeFunctionData,
     getContract,
-    Hash,
-    PublicClient,
-    TestClient,
-    WalletClient,
+    type Hash,
+    type PublicClient,
+    type TestClient,
+    type WalletClient,
     decodeEventLog,
     keccak256,
     stringToHex,
@@ -21,7 +21,7 @@ import governorArtifacts from "../contracts/artifacts/OZGovernor.json";
 import voteTokenArtifacts from "../contracts/artifacts/VoteToken.json";
 import timelockArtifacts from "../contracts/artifacts/TimelockController.json";
 import { QueueAction } from "../actions/gov-queue";
-import { Proposal } from "../types";
+import type { Proposal } from "../types";
 import { ExecuteAction } from "../actions/gov-execute";
 import { ProposeAction } from "../actions/gov-propose";
 

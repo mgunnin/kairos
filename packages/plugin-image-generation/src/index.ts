@@ -1,11 +1,11 @@
 import { elizaLogger, generateText } from "@elizaos/core";
 import {
-    Action,
-    HandlerCallback,
-    IAgentRuntime,
-    Memory,
-    Plugin,
-    State,
+    type Action,
+    type HandlerCallback,
+    type IAgentRuntime,
+    type Memory,
+    type Plugin,
+    type State,
     ModelClass,
 } from "@elizaos/core";
 import { generateImage } from "@elizaos/core";

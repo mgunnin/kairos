@@ -3,7 +3,7 @@ import { WalletProvider } from "../providers/wallet";
 import { voteTemplate } from "../templates";
 import type { Transaction, VoteParams } from "../types";
 import governorArtifacts from "../contracts/artifacts/OZGovernor.json";
-import { ByteArray, Hex, encodeFunctionData } from "viem";
+import { type ByteArray, type Hex, encodeFunctionData } from "viem";
 
 export { voteTemplate };
 
@@ -41,13 +41,13 @@ export class VoteAction {
                 data: txData as Hex,
                 chain: chainConfig,
                 kzg: {
-                    blobToKzgCommitment: function (_blob: ByteArray): ByteArray {
+                    blobToKzgCommitment: (_blob: ByteArray): ByteArray => {
                         throw new Error("Function not implemented.");
                     },
-                    computeBlobKzgProof: function (
+                    computeBlobKzgProof: (
                         _blob: ByteArray,
                         _commitment: ByteArray
-                    ): ByteArray {
+                    ): ByteArray => {
                         throw new Error("Function not implemented.");
                     },
                 },

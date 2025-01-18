@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
 import { defaultCharacter } from "@elizaos/core";
-import { initSquidRouterProvider, SquidRouterProvider } from "../providers/squidRouter.ts";
+import { initSquidRouterProvider, type SquidRouterProvider } from "../providers/squidRouter.ts";
 import {ChainType} from "@0xsquid/squid-types";
 
 // Mock Squid module

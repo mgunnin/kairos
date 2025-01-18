@@ -1,4 +1,4 @@
-import { PaginationOption } from "@injectivelabs/sdk-ts";
+import type { PaginationOption } from "@injectivelabs/sdk-ts";
 export interface PaginationParams {
     pagination?: PaginationOption;
 }

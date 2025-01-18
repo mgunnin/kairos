@@ -1,9 +1,9 @@
-import {
+import type {
     AuthorityMetadata,
     TokenFactoryModuleParams,
     TokenFactoryModuleState,
 } from "@injectivelabs/sdk-ts";
-import { CosmosBankV1Beta1Bank } from "@injectivelabs/core-proto-ts";
+import type { CosmosBankV1Beta1Bank } from "@injectivelabs/core-proto-ts";
 // Token Factory Module Params// Param interfaces
 export interface GetDenomsFromCreatorParams {
     creator: string;

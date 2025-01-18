@@ -1,11 +1,11 @@
 import settings from "./settings.ts";
 import {
-    EmbeddingModelSettings,
-    ImageModelSettings,
+    type EmbeddingModelSettings,
+    type ImageModelSettings,
     ModelClass,
     ModelProviderName,
-    Models,
-    ModelSettings,
+    type Models,
+    type ModelSettings,
 } from "./types.ts";
 
 export const models: Models = {

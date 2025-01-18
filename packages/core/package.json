@@ -21,7 +21,6 @@
     ],
     "scripts": {
         "build": "tsup --format esm --dts",
-        "lint": "eslint --fix  --cache .",
         "watch": "tsc --watch",
         "dev": "tsup --format esm --dts --watch",
         "build:docs": "cd docs && pnpm run build",

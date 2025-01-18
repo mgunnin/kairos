@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { IAgentRuntime } from "@elizaos/core";
+import type { IAgentRuntime } from "@elizaos/core";
 import { ReservoirService } from "../services/reservoir";
 import { MemoryCacheManager } from "../services/cache-manager";
 import { RateLimiter } from "../services/rate-limiter";

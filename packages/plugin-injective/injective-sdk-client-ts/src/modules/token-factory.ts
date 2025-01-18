@@ -1,4 +1,4 @@
-import { InjectiveGrpcBase } from "../grpc/grpc-base";
+import type { InjectiveGrpcBase } from "../grpc/grpc-base";
 import {
     MsgBurn,
     MsgChangeAdmin,
@@ -6,9 +6,9 @@ import {
     MsgMint,
     MsgSetDenomMetadata,
 } from "@injectivelabs/sdk-ts";
-import * as TokenFactoryTypes from "../types/token-factory";
+import type * as TokenFactoryTypes from "../types/token-factory";
 import {
-    StandardResponse,
+    type StandardResponse,
     createSuccessResponse,
     createErrorResponse,
 } from "../types/index";

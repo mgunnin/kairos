@@ -27,31 +27,31 @@ import { getProviders } from "./providers.ts";
 import { RAGKnowledgeManager } from "./ragknowledge.ts";
 import settings from "./settings.ts";
 import {
-    Character,
-    Goal,
-    HandlerCallback,
-    IAgentRuntime,
-    ICacheManager,
-    IDatabaseAdapter,
-    IMemoryManager,
-    IRAGKnowledgeManager,
-    IVerifiableInferenceAdapter,
-    KnowledgeItem,
+    type Character,
+    type Goal,
+    type HandlerCallback,
+    type IAgentRuntime,
+    type ICacheManager,
+    type IDatabaseAdapter,
+    type IMemoryManager,
+    type IRAGKnowledgeManager,
+    type IVerifiableInferenceAdapter,
+    type KnowledgeItem,
     // RAGKnowledgeItem,
     //Media,
     ModelClass,
     ModelProviderName,
-    Plugin,
-    Provider,
-    Service,
-    ServiceType,
-    State,
-    UUID,
+    type Plugin,
+    type Provider,
+    type Service,
+    type ServiceType,
+    type State,
+    type UUID,
     type Action,
     type Actor,
     type Evaluator,
     type Memory,
-    DirectoryItem,
+    type DirectoryItem,
 } from "./types.ts";
 import { stringToUuid } from "./uuid.ts";
 import { glob } from "glob";
@@ -1256,7 +1256,7 @@ export class AgentRuntime implements IAgentRuntime {
 
                 allAttachments = recentMessagesData
                     .reverse()
-                    .map((msg) => {
+                    .flatMap((msg) => {
                         const msgTime = msg.createdAt ?? Date.now();
                         const isWithinTime =
                             msgTime >= oneHourBeforeLastMessage;
@@ -1267,8 +1267,7 @@ export class AgentRuntime implements IAgentRuntime {
                             });
                         }
                         return attachments;
-                    })
-                    .flat();
+                    });
             }
         }
 

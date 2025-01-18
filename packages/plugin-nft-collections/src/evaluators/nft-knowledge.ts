@@ -1,5 +1,5 @@
-import { Evaluator, IAgentRuntime, Memory, State } from "@elizaos/core";
-import { NFTKnowledge } from "../types";
+import type { Evaluator, IAgentRuntime, Memory, State } from "@elizaos/core";
+import type { NFTKnowledge } from "../types";
 
 export const nftKnowledgeEvaluator: Evaluator = {
     name: "nft-collection-evaluator",

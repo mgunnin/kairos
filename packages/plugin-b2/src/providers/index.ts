@@ -1,24 +1,24 @@
 import {
-    IAgentRuntime,
-    Memory,
-    Provider,
-    State,
+    type IAgentRuntime,
+    type Memory,
+    type Provider,
+    type State,
     elizaLogger,
 } from "@elizaos/core";
 import { privateKeyToAccount } from "viem/accounts";
 import {
     formatUnits,
-    Address,
-    Chain,
-    Account,
-    WalletClient,
-    PrivateKeyAccount,
+    type Address,
+    type Chain,
+    type Account,
+    type WalletClient,
+    type PrivateKeyAccount,
     http,
     createPublicClient,
     createWalletClient,
-    PublicClient,
-    Transport,
-    RpcSchema,
+    type PublicClient,
+    type Transport,
+    type RpcSchema,
 } from "viem";
 import { TOKEN_ADDRESSES } from "../utils/constants";
 import { b2Network } from "../utils/chains";

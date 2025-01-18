@@ -1,8 +1,8 @@
-import { InjectiveGrpcBase } from "../grpc/grpc-base";
+import type { InjectiveGrpcBase } from "../grpc/grpc-base";
 import { MsgSend, MsgMultiSend } from "@injectivelabs/sdk-ts";
-import * as BankTypes from "../types/bank";
+import type * as BankTypes from "../types/bank";
 import {
-    StandardResponse,
+    type StandardResponse,
     createSuccessResponse,
     createErrorResponse,
 } from "../types/index";

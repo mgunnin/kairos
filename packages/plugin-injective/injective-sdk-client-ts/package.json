@@ -7,9 +7,6 @@
     "scripts": {
       "build": "tsc",
       "test": "jest",
-      "lint": "eslint . ",
-      "lint:fix": "eslint . --fix",
-      "format": "prettier --write \"src/**/*.ts\"",
       "test:integration": "vitest integration --reporter verbose",
       "dev": "tsc --watch",
       "type-check": "tsc --noEmit"

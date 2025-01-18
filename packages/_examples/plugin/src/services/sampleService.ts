@@ -1,7 +1,7 @@
 import {
     Service,
     ServiceType,
-    IAgentRuntime,
+    type IAgentRuntime,
     // Memory,
     // State,
     elizaLogger,

@@ -1,4 +1,4 @@
-import { Plugin } from "@elizaos/core";
+import type { Plugin } from "@elizaos/core";
 export { onchainJson } from "./types/iq.ts";
 
 export const elizaCodeinPlugin: Plugin = {

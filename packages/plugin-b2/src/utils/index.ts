@@ -1,12 +1,12 @@
 import { elizaLogger } from "@elizaos/core";
 import {
-    Hash,
-    Address,
+    type Hash,
+    type Address,
     parseUnits,
     encodeFunctionData,
 } from "viem";
 import { b2Network } from "./chains";
-import { WalletProvider } from "../providers";
+import type { WalletProvider } from "../providers";
 import { TOKEN_ADDRESSES } from "./constants";
 
 export const getTxReceipt = async (walletProvider: WalletProvider, tx: Hash) => {

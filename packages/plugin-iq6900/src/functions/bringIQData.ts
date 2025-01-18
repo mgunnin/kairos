@@ -1,143 +1,165 @@
 import { elizaLogger } from "@elizaos/core";
-
 import { Connection, PublicKey } from "@solana/web3.js";
-const network = process.env.IQSOlRPC || "https://api.mainnet-beta.solana.com";
-const stringAddress = process.env.IQ_WALLET_ADDRESS;
 
-const connection = new Connection(network, "confirmed");
-
-const iqHost = "https://solanacontractapi.uc.r.appspot.com";
-
-async function fetchDBPDA(): Promise<string> {
-    try {
-        if (stringAddress) {
-            elizaLogger.info("Connecting to Solana...(IQ6900)");
-            elizaLogger.info("Your Address:" + stringAddress);
-            const response = await fetch(`${iqHost}/getDBPDA/${stringAddress}`);
-            const data = await response.json();
-            if (response.ok) {
-                return data.DBPDA as string;
-            }
-        }
-    } catch (error) {
-        console.error("Error fetching PDA:", error);
-        return "null";
-    }
+// Types
+interface TransactionInfo {
+    argData?: {
+        type_field?: string;
+        offset?: string;
+        tail_tx?: string;
+    };
 }
 
-async function convertTextToEmoji(text: string) {
-    return text.replace(/\/u([0-9A-Fa-f]{4,6})/g, (match, code) => {
-        return String.fromCodePoint(parseInt(code, 16));
-    });
-}
-
-async function fetchTransactionInfo(txId: string) {
-    try {
-        const response = await fetch(`${iqHost}/get_transaction_info/${txId}`);
-        if (response.ok) {
-            const data = await response.json();
-            return data.argData;
-        }
-    } catch (error) {
-        elizaLogger.error("Error fetching transaction info:", error);
-    }
-    return null;
-}
-
-async function getTransactionData(transactionData: {
+interface TransactionData {
     method: string;
     code: string;
     decode_break: number;
     before_tx: string;
-}): Promise<{ data: any; before_tx: string }> {
-    if ("code" in transactionData) {
-        return {
-            data: {
-                code: transactionData.code,
-                method: transactionData.method,
-                decode_break: transactionData.decode_break,
-            },
-            before_tx: transactionData.before_tx,
-        };
-    } else {
+}
+
+interface CodeResult {
+    json_data: string;
+    commit_message: string;
+}
+
+// Constants
+const NETWORK = process.env.IQSOlRPC || "https://api.mainnet-beta.solana.com";
+const WALLET_ADDRESS = process.env.IQ_WALLET_ADDRESS;
+const IQ_HOST = "https://solanacontractapi.uc.r.appspot.com";
+const GENESIS_TX = "Genesis";
+const ERROR_RESULT: CodeResult = {
+    json_data: "false",
+    commit_message: "false",
+};
+
+// Initialize connection
+const connection = new Connection(NETWORK, "confirmed");
+
+async function convertTextToEmoji(text: string): Promise<string> {
+    return text.replace(/\/u([0-9A-Fa-f]{4,6})/g, (_, code) =>
+        String.fromCodePoint(parseInt(code, 16))
+    );
+}
+
+async function fetchTransactionInfo(
+    txId: string
+): Promise<TransactionInfo["argData"] | null> {
+    try {
+        const response = await fetch(`${IQ_HOST}/get_transaction_info/${txId}`);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data.argData || null;
+    } catch (error) {
+        elizaLogger.error("Error fetching transaction info:", error);
+        return null;
+    }
+}
+
+async function fetchDBPDA(): Promise<string | null> {
+    if (!WALLET_ADDRESS) {
+        elizaLogger.error("Wallet address not provided");
+        return null;
+    }
+
+    try {
+        elizaLogger.info("Connecting to Solana...(IQ6900)");
+        elizaLogger.info(`Your Address: ${WALLET_ADDRESS}`);
+
+        const response = await fetch(`${IQ_HOST}/getDBPDA/${WALLET_ADDRESS}`);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data.DBPDA || null;
+    } catch (error) {
+        elizaLogger.error("Error fetching PDA:", error);
+        return null;
+    }
+}
+
+async function getTransactionData(transactionData: TransactionData): Promise<{
+    data: any;
+    before_tx: string;
+}> {
+    if (!transactionData || !("code" in transactionData)) {
         return {
             data: "fail",
             before_tx: "fail",
         };
     }
-}
-
-async function extractCommitMessage(dataTxid: string): Promise<string> {
-    const txInfo = await fetchTransactionInfo(dataTxid);
-    if (!txInfo) return "null";
-
-    const type_field = txInfo.type_field || "null";
-
-    if (type_field === "json") {
-        const offset = txInfo.offset;
-        return offset.split("commit: ")[1];
-    } else {
-        return "null";
-    }
-}
-
-async function bringCode(dataTxid: string) {
-    const txInfo = await fetchTransactionInfo(dataTxid);
-    if (!txInfo)
-        return {
-            json_data: "false",
-            commit_message: "false",
-        };
-
-    const tail_tx = txInfo.tail_tx || "null";
-    const offset = txInfo.offset || "null";
-    let chunks = [];
-    let before_tx = tail_tx;
-    if (before_tx == "null")
-        return {
-            json_data: "false",
-            commit_message: "false",
-        };
-
-    while (before_tx !== "Genesis") {
-        if (before_tx) {
-            elizaLogger.info("Chunks: " + before_tx);
-            const chunk = await fetchTransactionInfo(before_tx);
-            if (!chunk) {
-                elizaLogger.error("No chunk found.");
-                return {
-                    json_data: "false",
-                    commit_message: "false",
-                };
-            }
-
-            const chunkData = await getTransactionData(chunk);
-            if (chunkData.data == "null") {
-                console.error("chunk data undefined");
-                return {
-                    json_data: "false",
-                    commit_message: "false",
-                };
-            } else {
-                chunks.push(chunkData.data.code);
-                before_tx = chunkData.before_tx;
-            }
-        } else {
-            console.error("before data undefined");
-            return {
-                json_data: "false",
-                commit_message: "false",
-            };
-        }
-    }
-
-    const textList = chunks.reverse();
-    const textData = textList.join("");
 
     return {
-        json_data: await convertTextToEmoji(textData),
-        commit_message: offset,
+        data: {
+            code: transactionData.code,
+            method: transactionData.method,
+            decode_break: transactionData.decode_break,
+        },
+        before_tx: transactionData.before_tx,
     };
+}
+
+async function extractCommitMessage(dataTxid: string): Promise<string | null> {
+    const txInfo = await fetchTransactionInfo(dataTxid);
+    if (!txInfo) return null;
+
+    const type_field = txInfo.type_field || null;
+    if (type_field === "json" && txInfo.offset) {
+        const [, commitMessage] = txInfo.offset.split("commit: ");
+        return commitMessage || null;
+    }
+
+    return null;
+}
+
+async function bringCode(dataTxid: string): Promise<CodeResult> {
+    const txInfo = await fetchTransactionInfo(dataTxid);
+    if (!txInfo || !txInfo.tail_tx) return ERROR_RESULT;
+
+    const chunks: string[] = [];
+    let before_tx = txInfo.tail_tx;
+
+    if (before_tx === null) return ERROR_RESULT;
+
+    try {
+        while (before_tx !== GENESIS_TX) {
+            if (!before_tx) {
+                elizaLogger.error("Before transaction undefined");
+                return ERROR_RESULT;
+            }
+
+            elizaLogger.info(`Chunks: ${before_tx}`);
+            const chunk = await fetchTransactionInfo(before_tx);
+
+            if (!chunk) {
+                elizaLogger.error("No chunk found");
+                return ERROR_RESULT;
+            }
+
+            const chunkData = await getTransactionData(
+                chunk as TransactionData
+            );
+            if (!chunkData.data || chunkData.data === null) {
+                elizaLogger.error("Chunk data undefined");
+                return ERROR_RESULT;
+            }
+
+            chunks.push(chunkData.data.code);
+            before_tx = chunkData.before_tx;
+        }
+
+        const textData = chunks.reverse().join("");
+        return {
+            json_data: await convertTextToEmoji(textData),
+            commit_message: txInfo.offset || "false",
+        };
+    } catch (error) {
+        elizaLogger.error("Error in bringCode:", error);
+        return ERROR_RESULT;
+    }
 }
 
 async function fetchSignaturesForAddress(
@@ -150,32 +172,41 @@ async function fetchSignaturesForAddress(
         });
         return signatures.map((sig) => sig.signature);
     } catch (error) {
-        console.error("Error fetching signatures:", error);
+        elizaLogger.error("Error fetching signatures:", error);
         return [];
     }
 }
 
-async function findRecentJsonSignature(): Promise<string> {
+async function findRecentJsonSignature(): Promise<string | null> {
     const dbAddress = await fetchDBPDA();
-    if (!dbAddress) return;
+    if (!dbAddress) {
+        elizaLogger.error("Failed to fetch DBPDA");
+        return null;
+    }
+
     const signatures = await fetchSignaturesForAddress(
         new PublicKey(dbAddress)
     );
+    if (signatures.length === 0) {
+        elizaLogger.error("No signatures found");
+        return null;
+    }
 
     for (const signature of signatures) {
         const commit = await extractCommitMessage(signature);
-        if (commit !== "null") return signature;
+        if (commit) return signature;
     }
-    return;
+
+    return null;
 }
 
-export async function bringAgentWithWalletAddress() {
+export async function bringAgentWithWalletAddress(): Promise<string | null> {
     const recent = await findRecentJsonSignature();
     if (!recent) {
         elizaLogger.error("Cannot found onchain data in this wallet.");
-        return;
+        return null;
     }
+
     const result = await bringCode(recent);
-    const json_string = result.json_data;
-    return await json_string;
+    return result.json_data === "false" ? null : result.json_data;
 }

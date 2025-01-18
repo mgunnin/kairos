@@ -1,5 +1,5 @@
-import { vi, expect, it, describe, beforeEach, Mock } from "vitest";
-import { Chain } from "@chain-registry/types";
+import { vi, expect, it, describe, beforeEach, type Mock } from "vitest";
+import type { Chain } from "@chain-registry/types";
 import { getChainByChainName } from "@chain-registry/utils";
 import { CosmosWallet } from "../shared/entities/cosmos-wallet.ts";
 import { getAvailableChains } from "../shared/helpers/cosmos-chains.ts";

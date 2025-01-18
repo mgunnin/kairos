@@ -3,17 +3,17 @@ import bodyParser from "body-parser";
 import cors from "cors";
 
 import {
-    AgentRuntime,
+    type AgentRuntime,
     elizaLogger,
     getEnvVariable,
-    UUID,
+    type UUID,
     validateCharacterConfig,
     ServiceType,
 } from "@elizaos/core";
 
-import { TeeLogQuery, TeeLogService } from "@elizaos/plugin-tee-log";
+import type { TeeLogQuery, TeeLogService } from "@elizaos/plugin-tee-log";
 import { REST, Routes } from "discord.js";
-import { DirectClient } from ".";
+import type { DirectClient } from ".";
 import { validateUuid } from "@elizaos/core";
 
 interface UUIDParams {
@@ -321,8 +321,8 @@ export function createApiRouter(
         async (req: express.Request, res: express.Response) => {
             try {
                 const query = req.body.query || {};
-                const page = parseInt(req.body.page) || 1;
-                const pageSize = parseInt(req.body.pageSize) || 10;
+                const page = Number.parseInt(req.body.page) || 1;
+                const pageSize = Number.parseInt(req.body.pageSize) || 10;
 
                 const teeLogQuery: TeeLogQuery = {
                     agentId: query.agentId || "",

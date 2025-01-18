@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import { listNFTAction } from "../actions/list-nft";
-import { IAgentRuntime, Memory } from "@elizaos/core";
-import { NFTService } from "../types";
+import type { IAgentRuntime, Memory } from "@elizaos/core";
+import type { NFTService } from "../types";
 
 describe("NFT Actions", () => {
     describe("List NFT Action", () => {

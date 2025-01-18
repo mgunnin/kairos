@@ -1,4 +1,4 @@
-import { elizaLogger, ICacheManager, settings } from "@elizaos/core";
+import { elizaLogger, type ICacheManager, settings } from "@elizaos/core";
 import NodeCache from "node-cache";
 import * as path from "path";
 import {
@@ -8,8 +8,8 @@ import {
     DEFAULT_SUPPORTED_SYMBOLS,
     RETRY_DELAY_MS,
 } from "./constants";
-import { BirdeyeApiParams, BirdeyeApiResponse } from "./types/api/common";
-import {
+import type { BirdeyeApiParams, BirdeyeApiResponse } from "./types/api/common";
+import type {
     BaseQuoteParams,
     BaseQuoteResponse,
     DefiHistoryPriceParams,
@@ -31,7 +31,7 @@ import {
     PriceVolumeParams,
     PriceVolumeResponse,
 } from "./types/api/defi";
-import {
+import type {
     OHLCVPairParams,
     OHLCVPairResponse,
     PairOverviewMultiParams,
@@ -39,11 +39,11 @@ import {
     PairOverviewSingleParams,
     PairOverviewSingleResponse,
 } from "./types/api/pair";
-import {
+import type {
     TokenMarketSearchParams,
     TokenMarketSearchResponse,
 } from "./types/api/search";
-import {
+import type {
     AllMarketsParams,
     AllMarketsResponse,
     MintBurnParams,
@@ -76,13 +76,13 @@ import {
     TopTradersParams,
     TopTradersResponse,
 } from "./types/api/token";
-import {
+import type {
     GainersLosersParams,
     GainersLosersResponse,
     TraderTransactionsSeekParams,
     TraderTransactionsSeekResponse,
 } from "./types/api/trader";
-import {
+import type {
     WalletPortfolioMultichainParams,
     WalletPortfolioMultichainResponse,
     WalletPortfolioParams,

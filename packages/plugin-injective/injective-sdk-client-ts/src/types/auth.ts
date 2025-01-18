@@ -1,11 +1,11 @@
-import {
+import type {
     PaginationOption,
     GrantWithDecodedAuthorization,
     GrantAuthorizationWithDecodedAuthorization,
     Pagination,
     Msgs,
 } from "@injectivelabs/sdk-ts";
-import { AddressParams } from "./base";
+import type { AddressParams } from "./base";
 // Auth Module Params
 // Start of Get Auth Module Request Parameters
 export interface AuthAccountParams extends AddressParams {

@@ -1,14 +1,14 @@
 import {
-    Action,
-    HandlerCallback,
-    IAgentRuntime,
-    Memory,
-    State,
+    type Action,
+    type HandlerCallback,
+    type IAgentRuntime,
+    type Memory,
+    type State,
     elizaLogger
 } from "@elizaos/core";
-import { encodingForModel, TiktokenModel } from "js-tiktoken";
+import { encodingForModel, type TiktokenModel } from "js-tiktoken";
 import { WebSearchService } from "../services/webSearchService";
-import { SearchResult } from "../types";
+import type { SearchResult } from "../types";
 
 const DEFAULT_MAX_WEB_SEARCH_TOKENS = 4000;
 const DEFAULT_MODEL_ENCODING = "gpt-3.5-turbo";

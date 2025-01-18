@@ -21,7 +21,7 @@ export class RateLimiter {
         this.retryDelay = config.retryDelay || 1000;
     }
 
-    async consume(key: string, points: number = 1): Promise<void> {
+    async consume(key: string, points = 1): Promise<void> {
         try {
             await this.limiter.consume(key, points);
         } catch (error: any) {
@@ -38,7 +38,7 @@ export class RateLimiter {
     async executeWithRetry<T>(
         key: string,
         operation: () => Promise<T>,
-        points: number = 1
+        points = 1
     ): Promise<T> {
         let lastError: Error | null = null;
         let retries = 0;
@@ -52,7 +52,7 @@ export class RateLimiter {
                 retries++;
 
                 if (error.message?.includes("Rate limit exceeded")) {
-                    const retryAfter = parseInt(
+                    const retryAfter = Number.parseInt(
                         error.message.match(/\d+/)?.[0] || "1",
                         10
                     );

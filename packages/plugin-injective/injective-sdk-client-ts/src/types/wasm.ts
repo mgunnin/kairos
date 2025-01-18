@@ -1,4 +1,4 @@
-import {
+import type {
     PaginationOption,
     Pagination,
     ExecArgs,
@@ -9,9 +9,9 @@ import {
     ContractCodeHistoryEntry,
     CodeInfoResponse,
 } from "@injectivelabs/sdk-ts";
-import { CosmwasmWasmV1Query } from "@injectivelabs/core-proto-ts";
-import { AccessConfig } from "@injectivelabs/core-proto-ts/cjs/cosmwasm/wasm/v1/types";
-import { PaginationParams } from "./base";
+import type { CosmwasmWasmV1Query } from "@injectivelabs/core-proto-ts";
+import type { AccessConfig } from "@injectivelabs/core-proto-ts/cjs/cosmwasm/wasm/v1/types";
+import type { PaginationParams } from "./base";
 // Wasm Module Params
 // Param interfaces
 export interface GetContractAccountsBalanceParams {

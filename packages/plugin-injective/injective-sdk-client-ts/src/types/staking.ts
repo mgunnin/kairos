@@ -1,4 +1,4 @@
-import {
+import type {
     PaginationOption,
     Pagination,
     StakingModuleParams,
@@ -8,7 +8,7 @@ import {
     UnBondingDelegation,
     ReDelegation,
 } from "@injectivelabs/sdk-ts";
-import { PaginationParams } from "./base";
+import type { PaginationParams } from "./base";
 // Staking Module Params
 // Param interfaces
 

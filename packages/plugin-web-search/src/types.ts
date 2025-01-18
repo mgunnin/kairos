@@ -1,4 +1,4 @@
-import { Service } from "@elizaos/core";
+import type { Service } from "@elizaos/core";
 
 export interface IWebSearchService extends Service {
     search(

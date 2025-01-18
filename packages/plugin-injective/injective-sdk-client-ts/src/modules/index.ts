@@ -1,5 +1,5 @@
 import { InjectiveGrpcBase } from "../grpc/grpc-base";
-import { Network } from "@injectivelabs/networks";
+import type { Network } from "@injectivelabs/networks";
 
 import * as AuctionModule from "./auction";
 import * as AuthModule from "./auth";

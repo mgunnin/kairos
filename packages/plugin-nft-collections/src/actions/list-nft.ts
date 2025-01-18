@@ -1,6 +1,6 @@
-import { Action, IAgentRuntime, Memory, State } from "@elizaos/core";
-import { ReservoirService } from "../services/reservoir";
-import { HandlerCallback } from "@elizaos/core";
+import type { Action, IAgentRuntime, Memory, State } from "@elizaos/core";
+import type { ReservoirService } from "../services/reservoir";
+import type { HandlerCallback } from "@elizaos/core";
 
 // Helper function to extract NFT listing details from the message
 function extractListingDetails(text: string): {
@@ -15,7 +15,7 @@ function extractListingDetails(text: string): {
     return {
         collectionAddress: addressMatch ? addressMatch[1] : null,
         tokenId: tokenIdMatch ? tokenIdMatch[1] : null,
-        price: priceMatch ? parseFloat(priceMatch[1]) : undefined,
+        price: priceMatch ? Number.parseFloat(priceMatch[1]) : undefined,
     };
 }
 

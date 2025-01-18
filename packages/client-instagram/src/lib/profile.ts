@@ -1,6 +1,6 @@
-import { elizaLogger, IAgentRuntime } from "@elizaos/core";
-import { InstagramConfig } from "../environment";
-import { InstagramProfile } from "../types";
+import { elizaLogger, type IAgentRuntime } from "@elizaos/core";
+import type { InstagramConfig } from "../environment";
+import type { InstagramProfile } from "../types";
 import { getIgClient } from "./state";
 
 export async function fetchProfile(

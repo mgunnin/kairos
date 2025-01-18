@@ -1,4 +1,4 @@
-import { InjectiveGrpcBase } from "../grpc/grpc-base";
+import type { InjectiveGrpcBase } from "../grpc/grpc-base";
 import {
     MsgBeginRedelegate,
     MsgDelegate,
@@ -7,9 +7,9 @@ import {
     MsgEditValidator,
     MsgCancelUnbondingDelegation,
 } from "@injectivelabs/sdk-ts";
-import * as StakingTypes from "../types/staking";
+import type * as StakingTypes from "../types/staking";
 import {
-    StandardResponse,
+    type StandardResponse,
     createSuccessResponse,
     createErrorResponse,
 } from "../types/index";

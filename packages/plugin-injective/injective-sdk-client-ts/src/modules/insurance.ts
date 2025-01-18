@@ -1,11 +1,11 @@
-import { InjectiveGrpcBase } from "../grpc/grpc-base";
+import type { InjectiveGrpcBase } from "../grpc/grpc-base";
 import {
     MsgCreateInsuranceFund,
     MsgRequestRedemption,
     MsgUnderwrite,
-    TxResponse,
+    type TxResponse,
 } from "@injectivelabs/sdk-ts";
-import {
+import type {
     MsgCreateInsuranceFundParams,
     MsgRequestRedemptionParams,
     MsgUnderwriteParams,
@@ -14,7 +14,7 @@ import {
     GetPendingRedemptionsParams,
 } from "../types/insurance";
 import {
-    StandardResponse,
+    type StandardResponse,
     createSuccessResponse,
     createErrorResponse,
 } from "../types/index";

@@ -1,4 +1,4 @@
-import {
+import type {
     PaginationOption,
     TradeDirection,
     TradeExecutionType,
@@ -7,12 +7,12 @@ import {
     MarketType,
     GridStrategyType,
 } from "@injectivelabs/sdk-ts";
-import { PaginationParams, TimeRangeParams } from "./base";
-import {
+import type { PaginationParams, TimeRangeParams } from "./base";
+import type {
     InjectiveExchangeV1Beta1Exchange,
     InjectiveOracleV1Beta1Oracle,
 } from "@injectivelabs/core-proto-ts";
-import { OrderSide, OrderState } from "@injectivelabs/ts-types";
+import type { OrderSide, OrderState } from "@injectivelabs/ts-types";
 
 export interface MarketIdParam {
     marketId: string;
@@ -23,17 +23,17 @@ export interface SubaccountIdParam {
 }
 // Exchange Module
 // Start of Get Exchange Module Params
-export interface GetModuleParamsParams {}
+export type GetModuleParamsParams = {}
 
-export interface GetModuleStateParams {}
+export type GetModuleStateParams = {}
 
-export interface GetFeeDiscountScheduleParams {}
+export type GetFeeDiscountScheduleParams = {}
 
 export interface GetFeeDiscountAccountInfoParams {
     injAddress: string;
 }
 
-export interface GetTradingRewardsCampaignParams {}
+export type GetTradingRewardsCampaignParams = {}
 
 export interface GetTradeRewardPointsParams {
     injectiveAddresses: string[];
@@ -43,7 +43,7 @@ export interface GetPendingTradeRewardPointsParams {
     injectiveAddresses: string[];
 }
 
-export interface GetExchangePositionsParams {}
+export type GetExchangePositionsParams = {}
 
 export interface GetSubaccountTradeNonceParams {
     subaccountId: string;

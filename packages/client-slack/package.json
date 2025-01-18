@@ -23,7 +23,6 @@
         "build": "tsup src/index.ts --format esm --dts",
         "test": "vitest run",
         "test:watch": "vitest",
-        "lint": "eslint --fix  --cache .",
         "clean": "rimraf dist",
         "dev": "tsup src/index.ts --watch",
         "example": "ts-node src/examples/standalone-example.ts",

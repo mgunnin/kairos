@@ -1,6 +1,6 @@
 import {
-    Action,
-    ActionExample,
+    type Action,
+    type ActionExample,
     elizaLogger,
     type IAgentRuntime,
     type Memory,

@@ -1,12 +1,12 @@
 import {
-    IAgentRuntime,
-    Memory,
-    Provider,
-    State,
+    type IAgentRuntime,
+    type Memory,
+    type Provider,
+    type State,
     elizaLogger,
 } from "@elizaos/core";
-import { TdxQuoteResponse, TappdClient, TdxQuoteHashAlgorithms } from "@phala/dstack-sdk";
-import { RemoteAttestationQuote, TEEMode, RemoteAttestationMessage } from "../types/tee";
+import { type TdxQuoteResponse, TappdClient, type TdxQuoteHashAlgorithms } from "@phala/dstack-sdk";
+import { type RemoteAttestationQuote, TEEMode, type RemoteAttestationMessage } from "../types/tee";
 
 class RemoteAttestationProvider {
     private client: TappdClient;

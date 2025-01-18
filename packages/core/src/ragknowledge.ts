@@ -2,10 +2,10 @@ import { embed } from "./embedding.ts";
 import { splitChunks } from "./generation.ts";
 import elizaLogger from "./logger.ts";
 import {
-    IAgentRuntime,
-    IRAGKnowledgeManager,
-    RAGKnowledgeItem,
-    UUID,
+    type IAgentRuntime,
+    type IRAGKnowledgeManager,
+    type RAGKnowledgeItem,
+    type UUID,
     KnowledgeScope,
 } from "./types.ts";
 import { stringToUuid } from "./uuid.ts";

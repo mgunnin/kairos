@@ -2,11 +2,11 @@ import {
     composeContext,
     elizaLogger,
     generateObjectDeprecated,
-    HandlerCallback,
-    IAgentRuntime,
-    Memory,
+    type HandlerCallback,
+    type IAgentRuntime,
+    type Memory,
     ModelClass,
-    State
+    type State
 } from "@elizaos/core";
 import {xChainSwapTemplate} from "../templates";
 import {convertToWei, isXChainSwapContent, validateSquidRouterConfig} from "../helpers/utils.ts";

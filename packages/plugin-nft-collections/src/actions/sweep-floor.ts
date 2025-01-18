@@ -1,6 +1,6 @@
-import { Action, IAgentRuntime, Memory, State } from "@elizaos/core";
-import { ReservoirService } from "../services/reservoir";
-import { HandlerCallback } from "@elizaos/core";
+import type { Action, IAgentRuntime, Memory, State } from "@elizaos/core";
+import type { ReservoirService } from "../services/reservoir";
+import type { HandlerCallback } from "@elizaos/core";
 
 // Helper function to extract NFT details from the message
 function extractNFTDetails(text: string): {
@@ -12,7 +12,7 @@ function extractNFTDetails(text: string): {
 
     return {
         collectionAddress: addressMatch ? addressMatch[0] : null,
-        quantity: quantityMatch ? parseInt(quantityMatch[0]) : 1,
+        quantity: quantityMatch ? Number.parseInt(quantityMatch[0]) : 1,
     };
 }
 

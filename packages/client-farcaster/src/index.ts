@@ -1,9 +1,9 @@
-import { Client, IAgentRuntime, elizaLogger } from "@elizaos/core";
+import { type Client, type IAgentRuntime, elizaLogger } from "@elizaos/core";
 import { FarcasterClient } from "./client";
 import { FarcasterPostManager } from "./post";
 import { FarcasterInteractionManager } from "./interactions";
 import { Configuration, NeynarAPIClient } from "@neynar/nodejs-sdk";
-import { validateFarcasterConfig, FarcasterConfig } from "./environment";
+import { validateFarcasterConfig, type FarcasterConfig } from "./environment";
 
 /**
  * A manager that orchestrates all Farcaster operations:
