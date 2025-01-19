@@ -13,7 +13,7 @@ import { SlackClientInterface } from "@elizaos/client-slack";
 import { TelegramClientInterface } from "@elizaos/client-telegram";
 import { TwitterClientInterface } from "@elizaos/client-twitter";
 // import { ReclaimAdapter } from "@elizaos/plugin-reclaim";
-import { elizaCodeinPlugin, onchainJson } from "@elizaos/plugin-iq6900";
+// import { elizaCodeinPlugin, onchainJson } from "@elizaos/plugin-iq6900";
 import { PrimusAdapter } from "@elizaos/plugin-primus";
 
 import {
@@ -63,7 +63,7 @@ import {
     tradePlugin,
     webhookPlugin,
 } from "@elizaos/plugin-coinbase";
-import { coingeckoPlugin } from "@elizaos/plugin-coingecko";
+// import { coingeckoPlugin } from "@elizaos/plugin-coingecko";
 import { coinmarketcapPlugin } from "@elizaos/plugin-coinmarketcap";
 // import { confluxPlugin } from "@elizaos/plugin-conflux";
 // import { cronosZkEVMPlugin } from "@elizaos/plugin-cronoszkevm";
@@ -86,7 +86,7 @@ import { openWeatherPlugin } from "@elizaos/plugin-open-weather";
 import { quaiPlugin } from "@elizaos/plugin-quai";
 import { sgxPlugin } from "@elizaos/plugin-sgx";
 import { solanaPlugin } from "@elizaos/plugin-solana";
-import { solanaAgentkitPlugin } from "@elizaos/plugin-solana-agentkit";
+// import { solanaAgentkitPlugin } from "@elizaos/plugin-solana-agent-kit";
 // import { squidRouterPlugin } from "@elizaos/plugin-squid-router";
 import { dexScreenerPlugin } from "@elizaos/plugin-dexscreener";
 import { echoChambersPlugin } from "@elizaos/plugin-echochambers";
@@ -94,7 +94,7 @@ import { giphyPlugin } from "@elizaos/plugin-giphy";
 import { hyperliquidPlugin } from "@elizaos/plugin-hyperliquid";
 import { injectivePlugin } from "@elizaos/plugin-injective";
 import { letzAIPlugin } from "@elizaos/plugin-letzai";
-import { pythDataPlugin } from "@elizaos/plugin-pyth-data";
+// import { pythDataPlugin } from "@elizaos/plugin-pyth-data";
 import { stargazePlugin } from "@elizaos/plugin-stargaze";
 import { storyPlugin } from "@elizaos/plugin-story";
 import { suiPlugin } from "@elizaos/plugin-sui";
@@ -114,9 +114,9 @@ import net from "net";
 import path from "path";
 import { fileURLToPath } from "url";
 import yargs from "yargs";
-import { cryptoNewsProvider } from "../providers/cryptoNewsProvider";
-import { cryptoPriceProvider } from "../providers/cryptoPriceProvider";
-import { timeProvider } from "../providers/timeProvider";
+// import { cryptoNewsProvider } from "../providers/cryptoNewsProvider";
+// import { cryptoPriceProvider } from "../providers/cryptoPriceProvider";
+// import { timeProvider } from "../providers/timeProvider";
 
 const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
 const __dirname = path.dirname(__filename); // get the name of the directory
@@ -139,7 +139,7 @@ export function parseArguments(): {
     characters?: string;
 } {
     try {
-        return yargs(process.argv.slice(3))
+        const args = yargs(process.argv.slice(2))
             .option("character", {
                 type: "string",
                 description: "Path to the character JSON file",
@@ -150,6 +150,16 @@ export function parseArguments(): {
                     "Comma separated list of paths to character JSON files",
             })
             .parseSync();
+
+        // Handle the case where the value includes the equals sign
+        if (args.character && args.character.startsWith("=")) {
+            args.character = args.character.slice(1);
+        }
+        if (args.characters && args.characters.startsWith("=")) {
+            args.characters = args.characters.slice(1);
+        }
+
+        return args;
     } catch (error) {
         elizaLogger.error("Error parsing arguments:", error);
         return {};
@@ -195,64 +205,65 @@ function mergeCharacters(base: Character, child: Character): Character {
     };
     return mergeObjects(base, child);
 }
-function isAllStrings(arr: unknown[]): boolean {
-    return Array.isArray(arr) && arr.every((item) => typeof item === "string");
-}
-export async function loadCharacterFromOnchain(): Promise<Character[]> {
-    const jsonText = onchainJson;
+// function isAllStrings(arr: unknown[]): boolean {
+//     return Array.isArray(arr) && arr.every((item) => typeof item === "string");
+// }
+// export async function loadCharacterFromOnchain(): Promise<Character[]> {
+//     const jsonText = onchainJson;
 
-    console.log("JSON:", jsonText);
-    if (!jsonText) return [];
-    const loadedCharacters = [];
-    try {
-        const character = JSON.parse(jsonText);
-        validateCharacterConfig(character);
+//     console.log("JSON:", jsonText);
+//     if (!jsonText) return [];
+//     const loadedCharacters = [];
+//     try {
+//         const character = JSON.parse(jsonText);
+//         validateCharacterConfig(character);
 
-        // .id isn't really valid
-        const characterId = character.id || character.name;
-        const characterPrefix = `CHARACTER.${characterId.toUpperCase().replace(/ /g, "_")}.`;
+//         // .id isn't really valid
+//         const characterId = character.id || character.name;
+//         const characterPrefix = `CHARACTER.${characterId
+//             .toUpperCase()
+//             .replace(/ /g, "_")}.`;
 
-        const characterSettings = Object.entries(process.env)
-            .filter(([key]) => key.startsWith(characterPrefix))
-            .reduce((settings, [key, value]) => {
-                const settingKey = key.slice(characterPrefix.length);
-                settings[settingKey] = value;
-                return settings;
-            }, {});
+//         const characterSettings = Object.entries(process.env)
+//             .filter(([key]) => key.startsWith(characterPrefix))
+//             .reduce((settings, [key, value]) => {
+//                 const settingKey = key.slice(characterPrefix.length);
+//                 settings[settingKey] = value;
+//                 return settings;
+//             }, {});
 
-        if (Object.keys(characterSettings).length > 0) {
-            character.settings = character.settings || {};
-            character.settings.secrets = {
-                ...characterSettings,
-                ...character.settings.secrets,
-            };
-        }
+//         if (Object.keys(characterSettings).length > 0) {
+//             character.settings = character.settings || {};
+//             character.settings.secrets = {
+//                 ...characterSettings,
+//                 ...character.settings.secrets,
+//             };
+//         }
 
-        // Handle plugins
-        if (isAllStrings(character.plugins)) {
-            elizaLogger.info("Plugins are: ", character.plugins);
-            const importedPlugins = await Promise.all(
-                character.plugins.map(async (plugin) => {
-                    const importedPlugin = await import(plugin);
-                    return importedPlugin.default;
-                })
-            );
-            character.plugins = importedPlugins;
-        }
+//         // Handle plugins
+//         if (isAllStrings(character.plugins)) {
+//             elizaLogger.info("Plugins are: ", character.plugins);
+//             const importedPlugins = await Promise.all(
+//                 character.plugins.map(async (plugin) => {
+//                     const importedPlugin = await import(plugin);
+//                     return importedPlugin.default;
+//                 })
+//             );
+//             character.plugins = importedPlugins;
+//         }
 
-        loadedCharacters.push(character);
-        elizaLogger.info(
-            `Successfully loaded character from: ${process.env.IQ_WALLET_ADDRESS}`
-        );
-        return loadedCharacters;
-    } catch (e) {
-        elizaLogger.error(
-            `Error parsing character from ${process.env.IQ_WALLET_ADDRESS}: ${e}`
-        );
-        process.exit(1);
-    }
-}
-
+//         loadedCharacters.push(character);
+//         elizaLogger.info(
+//             `Successfully loaded character from: ${process.env.IQ_WALLET_ADDRESS}`
+//         );
+//         return loadedCharacters;
+//     } catch (e) {
+//         elizaLogger.error(
+//             `Error parsing character from ${process.env.IQ_WALLET_ADDRESS}: ${e}`
+//         );
+//         process.exit(1);
+//     }
+// }
 
 async function loadCharactersFromUrl(url: string): Promise<Character[]> {
     try {
@@ -283,7 +294,9 @@ async function jsonToCharacter(
 
     // .id isn't really valid
     const characterId = character.id || character.name;
-    const characterPrefix = `CHARACTER.${characterId.toUpperCase().replace(/ /g, "_")}.`;
+    const characterPrefix = `CHARACTER.${characterId
+        .toUpperCase()
+        .replace(/ /g, "_")}.`;
     const characterSettings = Object.entries(process.env)
         .filter(([key]) => key.startsWith(characterPrefix))
         .reduce((settings, [key, value]) => {
@@ -393,8 +406,9 @@ export async function loadCharacters(
     if (characterPaths?.length > 0) {
         for (const characterPath of characterPaths) {
             try {
-                const character: Character =
-                    await loadCharacterTryPath(characterPath);
+                const character: Character = await loadCharacterTryPath(
+                    characterPath
+                );
                 loadedCharacters.push(character);
             } catch (e) {
                 process.exit(1);
@@ -468,11 +482,11 @@ export function getTokenForProvider(
                 character.settings?.secrets?.OPENAI_API_KEY ||
                 settings.OPENAI_API_KEY
             );
-        case ModelProviderName.ETERNALAI:
-            return (
-                character.settings?.secrets?.ETERNALAI_API_KEY ||
-                settings.ETERNALAI_API_KEY
-            );
+        // case ModelProviderName.ETERNALAI:
+        //     return (
+        //         character.settings?.secrets?.ETERNALAI_API_KEY ||
+        //         settings.ETERNALAI_API_KEY
+        //     );
         case ModelProviderName.NINETEEN_AI:
             return (
                 character.settings?.secrets?.NINETEEN_AI_API_KEY ||
@@ -884,10 +898,10 @@ export async function createAgent(
         character,
         // character.plugins are handled when clients are added
         plugins: [
-            getSecret(character, "IQ_WALLET_ADDRESS") &&
-            getSecret(character, "IQSOlRPC")
-                ? elizaCodeinPlugin
-                : null,
+            // getSecret(character, "IQ_WALLET_ADDRESS") &&
+            // getSecret(character, "IQSOlRPC")
+            //     ? elizaCodeinPlugin
+            //     : null,
             bootstrapPlugin,
             rabbiPlugin,
             getSecret(character, "DEXSCREENER_API_KEY")
@@ -903,9 +917,9 @@ export async function createAgent(
                 !getSecret(character, "WALLET_PUBLIC_KEY")?.startsWith("0x"))
                 ? solanaPlugin
                 : null,
-            getSecret(character, "SOLANA_PRIVATE_KEY")
-                ? solanaAgentkitPlugin
-                : null,
+            // getSecret(character, "SOLANA_PRIVATE_KEY")
+            //     ? solanaAgentkitPlugin
+            //     : null,
             getSecret(character, "AUTONOME_JWT_TOKEN") ? autonomePlugin : null,
             // (getSecret(character, "NEAR_ADDRESS") ||
             //     getSecret(character, "NEAR_WALLET_PUBLIC_KEY")) &&
@@ -978,10 +992,10 @@ export async function createAgent(
                 ? webhookPlugin
                 : null,
             goatPlugin,
-            getSecret(character, "COINGECKO_API_KEY") ||
-            getSecret(character, "COINGECKO_PRO_API_KEY")
-                ? coingeckoPlugin
-                : null,
+            // getSecret(character, "COINGECKO_API_KEY") ||
+            // getSecret(character, "COINGECKO_PRO_API_KEY")
+            //     ? coingeckoPlugin
+            //     : null,
             getSecret(character, "EVM_PROVIDER_URL") ? goatPlugin : null,
             getSecret(character, "ABSTRACT_PRIVATE_KEY")
                 ? abstractPlugin
@@ -1061,12 +1075,12 @@ export async function createAgent(
             getSecret(character, "RESERVOIR_API_KEY")
                 ? createNFTCollectionsPlugin()
                 : null,
-            getSecret(character, "PYTH_TESTNET_PROGRAM_KEY") ||
-            getSecret(character, "PYTH_MAINNET_PROGRAM_KEY")
-                ? pythDataPlugin
-                : null,
+            // getSecret(character, "PYTH_TESTNET_PROGRAM_KEY") ||
+            // getSecret(character, "PYTH_MAINNET_PROGRAM_KEY")
+            //     ? pythDataPlugin
+            //     : null,
         ].filter(Boolean),
-        providers: [timeProvider, cryptoPriceProvider, cryptoNewsProvider],
+        providers: [],
         actions: [],
         services: [],
         managers: [],
@@ -1238,12 +1252,19 @@ const startAgents = async () => {
     const charactersArg = args.characters || args.character;
     let characters = [defaultCharacter];
 
-    if (process.env.IQ_WALLET_ADDRESS && process.env.IQSOlRPC) {
-        characters = await loadCharacterFromOnchain();
-    }
+    elizaLogger.info("Loading character settings:", {
+        ARGV: process.argv,
+        CHARACTER_ARG: charactersArg,
+        CWD: process.cwd(),
+    });
 
-    if ((!onchainJson && charactersArg) || hasValidRemoteUrls()) {
-        characters = await loadCharacters(charactersArg);
+    if (charactersArg) {
+        try {
+            characters = await loadCharacters(charactersArg);
+        } catch (error) {
+            elizaLogger.error("Error loading characters:", error);
+            process.exit(1);
+        }
     }
 
     // Normalize characters for injectable plugins
