@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { DeriveKeyProvider } from '../providers/deriveKeyProvider';
+import { DeriveKeyProvider } from '../src/providers/deriveKeyProvider';
 import { TappdClient } from '@phala/dstack-sdk';
-import { TEEMode } from '../types/tee';
+import { TEEMode } from '../src/types/tee';
 
 // Mock dependencies
 vi.mock('@phala/dstack-sdk', () => ({
@@ -101,33 +101,11 @@ describe('DeriveKeyProvider', () => {
         it('should derive Ed25519 keypair successfully', async () => {
             const path = 'test-path';
             const subject = 'test-subject';
-            const agentId = 'test-agent';
+            const result = await provider.deriveEd25519Keypair(path, subject);
 
-            const result = await provider.deriveEd25519Keypair(path, subject, agentId);
-
-            expect(result).toHaveProperty('keypair');
-            expect(result).toHaveProperty('attestation');
-            expect(result.keypair.publicKey.toBase58()).toBe('mock-solana-public-key');
-        });
-    });
-
-    describe('deriveEcdsaKeypair', () => {
-        let provider: DeriveKeyProvider;
-
-        beforeEach(() => {
-            provider = new DeriveKeyProvider(TEEMode.LOCAL);
-        });
-
-        it('should derive ECDSA keypair successfully', async () => {
-            const path = 'test-path';
-            const subject = 'test-subject';
-            const agentId = 'test-agent';
-
-            const result = await provider.deriveEcdsaKeypair(path, subject, agentId);
-
-            expect(result).toHaveProperty('keypair');
-            expect(result).toHaveProperty('attestation');
-            expect(result.keypair.address).toBe('mock-evm-address');
+            const client = TappdClient.mock.results[0].value;
+            expect(client.deriveKey).toHaveBeenCalledWith(path, subject);
+            expect(result.keypair.publicKey.toBase58()).toEqual('mock-solana-public-key');
         });
     });
 });

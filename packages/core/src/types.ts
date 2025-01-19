@@ -224,6 +224,7 @@ export type Models = {
     [ModelProviderName.NANOGPT]: Model;
     [ModelProviderName.HYPERBOLIC]: Model;
     [ModelProviderName.VENICE]: Model;
+    [ModelProviderName.NVIDIA]: Model;
     [ModelProviderName.NINETEEN_AI]: Model;
     [ModelProviderName.AKASH_CHAT_API]: Model;
     [ModelProviderName.LIVEPEER]: Model;
@@ -259,6 +260,7 @@ export enum ModelProviderName {
     NANOGPT = "nanogpt",
     HYPERBOLIC = "hyperbolic",
     VENICE = "venice",
+    NVIDIA = "nvidia",
     NINETEEN_AI = "nineteen_ai",
     AKASH_CHAT_API = "akash_chat_api",
     LIVEPEER = "livepeer",

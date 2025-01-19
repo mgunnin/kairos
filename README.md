@@ -6,7 +6,7 @@
 
 <div align="center">
 
-📖 [Documentation](https://elizaos.github.io/eliza/) | 🎯 [Examples](https://github.com/thejoven/awesome-eliza)
+📑 [Technical Report](https://arxiv.org/pdf/2501.06781) |  📖 [Documentation](https://elizaos.github.io/eliza/) | 🎯 [Examples](https://github.com/thejoven/awesome-eliza)
 
 </div>
 
@@ -157,11 +157,24 @@ pnpm install --include=optional sharp
 - [GitHub Issues](https://github.com/elizaos/eliza/issues). Best for: bugs you encounter using Eliza, and feature proposals.
 - [Discord](https://discord.gg/ai16z). Best for: sharing your applications and hanging out with the community.
 
+## Citation
+
+We now have a [paper](https://arxiv.org/pdf/2501.06781) you can cite for the Eliza OS:
+```bibtex
+@article{walters2025eliza,
+  title={Eliza: A Web3 friendly AI Agent Operating System},
+  author={Walters, Shaw and Gao, Sam and Nerd, Shakker and Da, Feng and Williams, Warren and Meng, Ting-Chien and Han, Hunter and He, Frank and Zhang, Allen and Wu, Ming and others},
+  journal={arXiv preprint arXiv:2501.06781},
+  year={2025}
+}
+```
+
 ## Contributors
 
 <a href="https://github.com/elizaos/eliza/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=elizaos/eliza" />
+  <img src="https://contrib.rocks/image?repo=elizaos/eliza" alt="Eliza project contributors" />
 </a>
+
 
 ## Star History
 

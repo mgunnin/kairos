@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { RemoteAttestationProvider } from '../providers/remoteAttestationProvider';
+import { RemoteAttestationProvider } from '../src/providers/remoteAttestationProvider';
 import { TappdClient } from '@phala/dstack-sdk';
-import { TEEMode } from '../types/tee';
+import { TEEMode } from '../src/types/tee';
 
 // Mock TappdClient
 vi.mock('@phala/dstack-sdk', () => ({

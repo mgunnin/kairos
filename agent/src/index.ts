@@ -4,14 +4,15 @@ import { RedisClient } from "@elizaos/adapter-redis";
 import { SqliteDatabaseAdapter } from "@elizaos/adapter-sqlite";
 import { SupabaseDatabaseAdapter } from "@elizaos/adapter-supabase";
 import { AutoClientInterface } from "@elizaos/client-auto";
-import { DirectClient } from "@elizaos/client-direct";
 import { DiscordClientInterface } from "@elizaos/client-discord";
-import { FarcasterClientInterface } from "@elizaos/client-farcaster";
 import { InstagramClientInterface } from "@elizaos/client-instagram";
 import { LensAgentClient } from "@elizaos/client-lens";
 import { SlackClientInterface } from "@elizaos/client-slack";
 import { TelegramClientInterface } from "@elizaos/client-telegram";
 import { TwitterClientInterface } from "@elizaos/client-twitter";
+import { FarcasterClientInterface } from "@elizaos/client-farcaster";
+import { DirectClient } from "@elizaos/client-direct";
+import { agentKitPlugin } from "@elizaos/plugin-agentkit";
 // import { ReclaimAdapter } from "@elizaos/plugin-reclaim";
 // import { elizaCodeinPlugin, onchainJson } from "@elizaos/plugin-iq6900";
 import { PrimusAdapter } from "@elizaos/plugin-primus";
@@ -105,8 +106,11 @@ import { verifiableLogPlugin } from "@elizaos/plugin-tee-verifiable-log";
 import { thirdwebPlugin } from "@elizaos/plugin-thirdweb";
 import { tonPlugin } from "@elizaos/plugin-ton";
 import { webSearchPlugin } from "@elizaos/plugin-web-search";
-
+import { pythDataPlugin } from "@elizaos/plugin-pyth-data";
+import { openaiPlugin } from '@elizaos/plugin-openai';
 import createRabbiTraderPlugin from "@elizaos/plugin-rabbi-trader";
+
+
 import { zksyncEraPlugin } from "@elizaos/plugin-zksync-era";
 import Database from "better-sqlite3";
 import fs from "fs";
@@ -564,15 +568,20 @@ export function getTokenForProvider(
                 character.settings?.secrets?.HYPERBOLIC_API_KEY ||
                 settings.HYPERBOLIC_API_KEY
             );
+
         case ModelProviderName.VENICE:
             return (
                 character.settings?.secrets?.VENICE_API_KEY ||
                 settings.VENICE_API_KEY
             );
         case ModelProviderName.ATOMA:
+             return (
+                 character.settings?.secrets?.ATOMASDK_BEARER_AUTH ||
+                 settings.ATOMASDK_BEARER_AUTH
+        case ModelProviderName.NVIDIA:
             return (
-                character.settings?.secrets?.ATOMASDK_BEARER_AUTH ||
-                settings.ATOMASDK_BEARER_AUTH
+                character.settings?.secrets?.NVIDIA_API_KEY ||
+                settings.NVIDIA_API_KEY
             );
         case ModelProviderName.AKASH_CHAT_API:
             return (
@@ -904,6 +913,10 @@ export async function createAgent(
             //     : null,
             bootstrapPlugin,
             rabbiPlugin,
+            getSecret(character, "CDP_API_KEY_NAME") &&
+            getSecret(character, "CDP_API_KEY_PRIVATE_KEY")
+                ? agentKitPlugin
+                : null,
             getSecret(character, "DEXSCREENER_API_KEY")
                 ? dexScreenerPlugin
                 : null,
@@ -959,6 +972,7 @@ export async function createAgent(
             getSecret(character, "FAL_API_KEY") ||
             getSecret(character, "OPENAI_API_KEY") ||
             getSecret(character, "VENICE_API_KEY") ||
+            getSecret(character, "NVIDIA_API_KEY") ||
             getSecret(character, "NINETEEN_AI_API_KEY") ||
             getSecret(character, "HEURIST_API_KEY") ||
             getSecret(character, "LIVEPEER_GATEWAY_URL")
@@ -1079,6 +1093,9 @@ export async function createAgent(
             // getSecret(character, "PYTH_MAINNET_PROGRAM_KEY")
             //     ? pythDataPlugin
             //     : null,
+            getSecret(character, "OPENAI_API_KEY") && getSecret(character, "ENABLE_OPEN_AI_COMMUNITY_PLUGIN")
+                ? openaiPlugin
+                : null,
         ].filter(Boolean),
         providers: [],
         actions: [],
@@ -1329,3 +1346,4 @@ if (
         console.error("unhandledRejection", err);
     });
 }
+

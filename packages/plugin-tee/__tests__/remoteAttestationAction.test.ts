@@ -1,9 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { remoteAttestationAction } from '../actions/remoteAttestation';
-import { RemoteAttestationProvider } from '../providers/remoteAttestationProvider';
+import { remoteAttestationAction } from '../src/actions/remoteAttestation';
+import { RemoteAttestationProvider } from '../src/providers/remoteAttestationProvider';
 
 // Mock dependencies
-vi.mock('../providers/remoteAttestationProvider');
+vi.mock('../src/providers/remoteAttestationProvider');
 vi.mock('undici', () => ({
     fetch: vi.fn().mockResolvedValue({
         json: () => Promise.resolve({ checksum: 'mock-checksum' })
@@ -76,7 +76,6 @@ describe('remoteAttestationAction', () => {
 
             expect(result).toBe(false);
         });
-
     });
 
     describe('validate', () => {
@@ -94,10 +93,11 @@ describe('remoteAttestationAction', () => {
             const [userMessage, agentMessage] = remoteAttestationAction.examples[0];
             expect(userMessage.user).toBe('{{user1}}');
             expect(userMessage.content.text).toBe('If you are running in a TEE, generate a remote attestation');
+            expect(userMessage.content.action).toBe('REMOTE_ATTESTATION');
 
             expect(agentMessage.user).toBe('{{user2}}');
             expect(agentMessage.content.text).toBe('Of course, one second...');
-            expect(agentMessage.content.action).toBe('REMOTE_ATTESTATION');
+            expect(agentMessage.content.action).toBeUndefined();
         });
     });
 });
