@@ -67,3 +67,9 @@ eliza.sig
 notes/*
 core/*
 .specstory
+
+# Solana Custom Code
+packages/plugin-solana/src/actions/marketScanner.ts
+packages/plugin-solana/src/actions/scanMarket.ts
+packages/plugin-solana/src/utils/swapUtils.ts
+packages/plugin-solana/src/config.ts
