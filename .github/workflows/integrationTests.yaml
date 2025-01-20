@@ -22,13 +22,19 @@ jobs:
             - uses: actions/setup-node@v4
               with:
                   node-version: "23.3.0"
-                  cache: "pnpm"
+                  cache: 'pnpm'
+                  cache-dependency-path: '**/pnpm-lock.yaml'
 
-            - name: Clean up
-              run: pnpm clean
+            - name: Configure pnpm
+              run: |
+                  pnpm config set store-dir ~/.pnpm-store
+                  pnpm config set prefer-offline true
+                  pnpm config set node-linker hoisted
+                  pnpm config set shamefully-hoist true
+                  pnpm config list
 
             - name: Install dependencies
-              run: pnpm install -r --no-frozen-lockfile
+              run: pnpm install -r --no-frozen-lockfile --prefer-offline
 
             - name: Build packages
               run: pnpm build

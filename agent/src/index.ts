@@ -14,8 +14,9 @@ import { TelegramClientInterface } from "@elizaos/client-telegram";
 import { TwitterClientInterface } from "@elizaos/client-twitter";
 import { agentKitPlugin } from "@elizaos/plugin-agentkit";
 // import { ReclaimAdapter } from "@elizaos/plugin-reclaim";
-import { onchainJson } from "@elizaos/plugin-iq6900";
 import { PrimusAdapter } from "@elizaos/plugin-primus";
+import { lightningPlugin } from "@elizaos/plugin-lightning";
+import { elizaCodeinPlugin, onchainJson } from "@elizaos/plugin-iq6900";
 
 import {
     AgentRuntime,
@@ -109,6 +110,15 @@ import { verifiableLogPlugin } from "@elizaos/plugin-tee-verifiable-log";
 import { thirdwebPlugin } from "@elizaos/plugin-thirdweb";
 import { tonPlugin } from "@elizaos/plugin-ton";
 import { webSearchPlugin } from "@elizaos/plugin-web-search";
+import { injectivePlugin } from "@elizaos/plugin-injective";
+import { giphyPlugin } from "@elizaos/plugin-giphy";
+import { letzAIPlugin } from "@elizaos/plugin-letzai";
+import { thirdwebPlugin } from "@elizaos/plugin-thirdweb";
+import { hyperliquidPlugin } from "@elizaos/plugin-hyperliquid";
+import { echoChambersPlugin } from "@elizaos/plugin-echochambers";
+import { dexScreenerPlugin } from "@elizaos/plugin-dexscreener";
+import { pythDataPlugin } from "@elizaos/plugin-pyth-data";
+import { openaiPlugin } from "@elizaos/plugin-openai";
 
 import { zksyncEraPlugin } from "@elizaos/plugin-zksync-era";
 import Database from "better-sqlite3";
@@ -390,10 +400,32 @@ function commaSeparatedStringToArray(commaSeparated: string): string[] {
     return commaSeparated?.split(",").map((value) => value.trim());
 }
 
+async function readCharactersFromStorage(
+    characterPaths: string[]
+): Promise<string[]> {
+    try {
+        const uploadDir = path.join(process.cwd(), "data", "characters");
+        await fs.promises.mkdir(uploadDir, { recursive: true });
+        const fileNames = await fs.promises.readdir(uploadDir);
+        fileNames.forEach((fileName) => {
+            characterPaths.push(path.join(uploadDir, fileName));
+        });
+    } catch (err) {
+        elizaLogger.error(`Error reading directory: ${err.message}`);
+    }
+
+    return characterPaths;
+}
+
 export async function loadCharacters(
     charactersArg: string
 ): Promise<Character[]> {
-    const characterPaths = commaSeparatedStringToArray(charactersArg);
+    let characterPaths = commaSeparatedStringToArray(charactersArg);
+
+    if (process.env.USE_CHARACTER_STORAGE === "true") {
+        characterPaths = await readCharactersFromStorage(characterPaths);
+    }
+
     const loadedCharacters: Character[] = [];
 
     if (characterPaths?.length > 0) {
@@ -1079,14 +1111,20 @@ export async function createAgent(
             getSecret(character, "RESERVOIR_API_KEY")
                 ? createNFTCollectionsPlugin()
                 : null,
-            // getSecret(character, "PYTH_TESTNET_PROGRAM_KEY") ||
-            // getSecret(character, "PYTH_MAINNET_PROGRAM_KEY")
-            //     ? pythDataPlugin
-            //     : null,
+            getSecret(character, "PYTH_TESTNET_PROGRAM_KEY") ||
+            getSecret(character, "PYTH_MAINNET_PROGRAM_KEY")
+                ? pythDataPlugin
+                : null,
+            getSecret(character, "LND_TLS_CERT") &&
+            getSecret(character, "LND_MACAROON") &&
+            getSecret(character, "LND_SOCKET")
+                ? lightningPlugin
+                : null,
             getSecret(character, "OPENAI_API_KEY") &&
             getSecret(character, "ENABLE_OPEN_AI_COMMUNITY_PLUGIN")
                 ? openaiPlugin
                 : null,
+            getSecret(character, "DEVIN_API_TOKEN") ? devinPlugin : null,
         ].filter(Boolean),
         providers: [],
         actions: [],
@@ -1264,7 +1302,9 @@ const startAgents = async () => {
         characters = await loadCharacterFromOnchain();
     }
 
-    if ((!onchainJson && charactersArg) || hasValidRemoteUrls()) {
+    const notOnchainJson = !onchainJson || onchainJson == "null";
+
+    if ((notOnchainJson && charactersArg) || hasValidRemoteUrls()) {
         characters = await loadCharacters(charactersArg);
     }
 
