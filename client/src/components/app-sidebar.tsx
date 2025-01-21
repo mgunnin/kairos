@@ -1,5 +1,3 @@
-import { useQuery } from "@tanstack/react-query";
-import info from "@/lib/info.json";
 import {
     Sidebar,
     SidebarContent,
@@ -14,9 +12,11 @@ import {
     SidebarMenuSkeleton,
 } from "@/components/ui/sidebar";
 import { apiClient } from "@/lib/api";
-import { NavLink, useLocation } from "react-router";
+import info from "@/lib/info.json";
 import type { UUID } from "@elizaos/core";
+import { useQuery } from "@tanstack/react-query";
 import { Book, Cog, User } from "lucide-react";
+import { NavLink, useLocation } from "react-router";
 import ConnectionStatus from "./connection-status";
 
 export function AppSidebar() {
@@ -41,6 +41,7 @@ export function AppSidebar() {
                                     width="100%"
                                     height="100%"
                                     className="size-7"
+                                    alt="ElizaOS Logo"
                                 />
 
                                 <div className="flex flex-col gap-0.5 leading-none">
@@ -63,7 +64,9 @@ export function AppSidebar() {
                                 <div>
                                     {Array.from({ length: 5 }).map(
                                         (_, index) => (
-                                            <SidebarMenuItem key={index}>
+                                            <SidebarMenuItem
+                                                key={`skeleton-${index}`}
+                                            >
                                                 <SidebarMenuSkeleton />
                                             </SidebarMenuItem>
                                         )

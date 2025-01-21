@@ -15,8 +15,8 @@ import { TwitterClientInterface } from "@elizaos/client-twitter";
 import { agentKitPlugin } from "@elizaos/plugin-agentkit";
 // import { ReclaimAdapter } from "@elizaos/plugin-reclaim";
 import { PrimusAdapter } from "@elizaos/plugin-primus";
-import { lightningPlugin } from "@elizaos/plugin-lightning";
-import { elizaCodeinPlugin, onchainJson } from "@elizaos/plugin-iq6900";
+// import { lightningPlugin } from "@elizaos/plugin-lightning";
+import { onchainJson } from "@elizaos/plugin-iq6900";
 
 import {
     AgentRuntime,
@@ -46,7 +46,7 @@ import { normalizeCharacter } from "@elizaos/plugin-di";
 import createGoatPlugin from "@elizaos/plugin-goat";
 // import { intifacePlugin } from "@elizaos/plugin-intiface";
 import { ThreeDGenerationPlugin } from "@elizaos/plugin-3d-generation";
-import { abstractPlugin } from "@elizaos/plugin-abstract";
+// import { abstractPlugin } from "@elizaos/plugin-abstract";
 // import { akashPlugin } from "@elizaos/plugin-akash";
 import { alloraPlugin } from "@elizaos/plugin-allora";
 import { aptosPlugin } from "@elizaos/plugin-aptos";
@@ -70,20 +70,14 @@ import { coinmarketcapPlugin } from "@elizaos/plugin-coinmarketcap";
 // import { confluxPlugin } from "@elizaos/plugin-conflux";
 //import { createCosmosPlugin } from "@elizaos/plugin-cosmos";
 // import { cronosZkEVMPlugin } from "@elizaos/plugin-cronoszkevm";
-import { dexScreenerPlugin } from "@elizaos/plugin-dexscreener";
-import { echoChambersPlugin } from "@elizaos/plugin-echochambers";
 
 // import { evmPlugin } from "@elizaos/plugin-evm";
 // import { flowPlugin } from "@elizaos/plugin-flow";
 import { fuelPlugin } from "@elizaos/plugin-fuel";
 import { genLayerPlugin } from "@elizaos/plugin-genlayer";
-import { giphyPlugin } from "@elizaos/plugin-giphy";
 import { gitcoinPassportPlugin } from "@elizaos/plugin-gitcoin-passport";
-import { hyperliquidPlugin } from "@elizaos/plugin-hyperliquid";
 import { imageGenerationPlugin } from "@elizaos/plugin-image-generation";
-import { injectivePlugin } from "@elizaos/plugin-injective";
 import { lensPlugin } from "@elizaos/plugin-lensNetwork";
-import { letzAIPlugin } from "@elizaos/plugin-letzai";
 import { multiversxPlugin } from "@elizaos/plugin-multiversx";
 // import { nearPlugin } from "@elizaos/plugin-near";
 import createNFTCollectionsPlugin from "@elizaos/plugin-nft-collections";
@@ -92,14 +86,21 @@ import { createNodePlugin } from "@elizaos/plugin-node";
 import { obsidianPlugin } from "@elizaos/plugin-obsidian";
 import { OpacityAdapter } from "@elizaos/plugin-opacity";
 import { openWeatherPlugin } from "@elizaos/plugin-open-weather";
-import { openaiPlugin } from "@elizaos/plugin-openai";
 //import { pythDataPlugin } from "@elizaos/plugin-pyth-data";
 import { quaiPlugin } from "@elizaos/plugin-quai";
 import { sgxPlugin } from "@elizaos/plugin-sgx";
 import { solanaPlugin } from "@elizaos/plugin-solana";
 // import { solanaAgentkitPlugin } from "@elizaos/plugin-solana-agent-kit";
 // import { squidRouterPlugin } from "@elizaos/plugin-squid-router";
-import createRabbiTraderPlugin from "@elizaos/plugin-rabbi-trader";
+import { dexScreenerPlugin } from "@elizaos/plugin-dexscreener";
+import { echoChambersPlugin } from "@elizaos/plugin-echochambers";
+import { giphyPlugin } from "@elizaos/plugin-giphy";
+import { hyperliquidPlugin } from "@elizaos/plugin-hyperliquid";
+import { injectivePlugin } from "@elizaos/plugin-injective";
+import { letzAIPlugin } from "@elizaos/plugin-letzai";
+import { openaiPlugin } from "@elizaos/plugin-openai";
+import { pythDataPlugin } from "@elizaos/plugin-pyth-data";
+// import createRabbiTraderPlugin from "@elizaos/plugin-rabbi-trader";
 import { stargazePlugin } from "@elizaos/plugin-stargaze";
 import { storyPlugin } from "@elizaos/plugin-story";
 import { suiPlugin } from "@elizaos/plugin-sui";
@@ -110,15 +111,6 @@ import { verifiableLogPlugin } from "@elizaos/plugin-tee-verifiable-log";
 import { thirdwebPlugin } from "@elizaos/plugin-thirdweb";
 import { tonPlugin } from "@elizaos/plugin-ton";
 import { webSearchPlugin } from "@elizaos/plugin-web-search";
-import { injectivePlugin } from "@elizaos/plugin-injective";
-import { giphyPlugin } from "@elizaos/plugin-giphy";
-import { letzAIPlugin } from "@elizaos/plugin-letzai";
-import { thirdwebPlugin } from "@elizaos/plugin-thirdweb";
-import { hyperliquidPlugin } from "@elizaos/plugin-hyperliquid";
-import { echoChambersPlugin } from "@elizaos/plugin-echochambers";
-import { dexScreenerPlugin } from "@elizaos/plugin-dexscreener";
-import { pythDataPlugin } from "@elizaos/plugin-pyth-data";
-import { openaiPlugin } from "@elizaos/plugin-openai";
 
 import { zksyncEraPlugin } from "@elizaos/plugin-zksync-era";
 import Database from "better-sqlite3";
@@ -840,32 +832,10 @@ export async function createAgent(
     }
 
     let goatPlugin: any | undefined;
-    let rabbiPlugin: any | undefined;
 
     if (getSecret(character, "EVM_PRIVATE_KEY")) {
         goatPlugin = await createGoatPlugin((secret) =>
             getSecret(character, secret)
-        );
-    }
-
-    if (getSecret(character, "SOLANA_PRIVATE_KEY")) {
-        const runtime = new AgentRuntime({
-            databaseAdapter: db,
-            token,
-            modelProvider: character.modelProvider,
-            evaluators: [],
-            character,
-            plugins: [],
-            providers: [],
-            actions: [],
-            services: [],
-            managers: [],
-            cacheManager: cache,
-            fetch: logFetch,
-        });
-        rabbiPlugin = await createRabbiTraderPlugin(
-            (secret) => getSecret(character, secret),
-            runtime
         );
     }
 
@@ -934,7 +904,6 @@ export async function createAgent(
             //     ? elizaCodeinPlugin
             //     : null,
             bootstrapPlugin,
-            rabbiPlugin,
             getSecret(character, "CDP_API_KEY_NAME") &&
             getSecret(character, "CDP_API_KEY_PRIVATE_KEY")
                 ? agentKitPlugin
@@ -1033,9 +1002,9 @@ export async function createAgent(
             //     ? coingeckoPlugin
             //     : null,
             getSecret(character, "EVM_PROVIDER_URL") ? goatPlugin : null,
-            getSecret(character, "ABSTRACT_PRIVATE_KEY")
-                ? abstractPlugin
-                : null,
+            // getSecret(character, "ABSTRACT_PRIVATE_KEY")
+            //     ? abstractPlugin
+            //     : null,
             getSecret(character, "B2_PRIVATE_KEY") ? b2Plugin : null,
             getSecret(character, "BINANCE_API_KEY") &&
             getSecret(character, "BINANCE_SECRET_KEY")
@@ -1115,16 +1084,16 @@ export async function createAgent(
             getSecret(character, "PYTH_MAINNET_PROGRAM_KEY")
                 ? pythDataPlugin
                 : null,
-            getSecret(character, "LND_TLS_CERT") &&
-            getSecret(character, "LND_MACAROON") &&
-            getSecret(character, "LND_SOCKET")
-                ? lightningPlugin
-                : null,
+            // getSecret(character, "LND_TLS_CERT") &&
+            // getSecret(character, "LND_MACAROON") &&
+            // getSecret(character, "LND_SOCKET")
+            //     ? lightningPlugin
+            //     : null,
             getSecret(character, "OPENAI_API_KEY") &&
             getSecret(character, "ENABLE_OPEN_AI_COMMUNITY_PLUGIN")
                 ? openaiPlugin
                 : null,
-            getSecret(character, "DEVIN_API_TOKEN") ? devinPlugin : null,
+            // getSecret(character, "DEVIN_API_TOKEN") ? devinPlugin : null,
         ].filter(Boolean),
         providers: [],
         actions: [],

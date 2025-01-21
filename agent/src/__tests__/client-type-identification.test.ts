@@ -1,11 +1,15 @@
 import type { Client, IAgentRuntime } from "@elizaos/core";
-import { describe, it, expect } from "@jest/globals";
+import { describe, expect, it } from "@jest/globals";
+
+interface TypedClient extends Client {
+    type?: string;
+}
 
 // Helper function to identify client types
-function determineClientType(client: Client): string {
+function determineClientType(client: TypedClient): string {
     // Check if client has a direct type identifier
-    if ("type" in client) {
-        return (client as any).type;
+    if ("type" in client && client.type) {
+        return client.type;
     }
 
     // Check constructor name
@@ -19,7 +23,7 @@ function determineClientType(client: Client): string {
 }
 
 // Mock client implementations for testing
-class MockNamedClient implements Client {
+class MockNamedClient implements TypedClient {
     type = "named-client";
     async start(_runtime?: IAgentRuntime) {
         return this;
@@ -27,14 +31,14 @@ class MockNamedClient implements Client {
     async stop(_runtime?: IAgentRuntime) {}
 }
 
-class MockConstructorClient implements Client {
+class MockConstructorClient implements TypedClient {
     async start(_runtime?: IAgentRuntime) {
         return this;
     }
     async stop(_runtime?: IAgentRuntime) {}
 }
 
-const mockPlainClient: Client = {
+const mockPlainClient: TypedClient = {
     async start(_runtime?: IAgentRuntime) {
         return {};
     },

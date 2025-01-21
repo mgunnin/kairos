@@ -1,13 +1,13 @@
+import { Button } from "@/components/ui/button";
 import { Check, Copy } from "lucide-react";
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
-const CopyButton = ({ text }: { text: any }) => {
+const CopyButton = ({ text }: { text: string | number | boolean }) => {
     const [copied, setCopied] = useState(false);
 
     const handleCopy = () => {
-        navigator.clipboard.writeText(text).then(() => {
+        navigator.clipboard.writeText(String(text)).then(() => {
             setCopied(true);
             setTimeout(() => setCopied(false), 2000); // Reset after 2 seconds
         });

@@ -34,7 +34,6 @@
         "@elizaos/client-slack": "workspace:*",
         "@elizaos/core": "workspace:*",
         "@elizaos/plugin-0g": "workspace:*",
-        "@elizaos/plugin-abstract": "workspace:*",
         "@elizaos/plugin-agentkit": "workspace:*",
         "@elizaos/plugin-aptos": "workspace:*",
         "@elizaos/plugin-birdeye": "workspace:*",
