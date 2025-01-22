@@ -100,7 +100,7 @@ pnpm clean
 
 Once the agent is running, you should see the message to run "pnpm start:client" at the end.
 
-Open another terminal, move to same directory, run the command below, then follow the URL to chat with your agent.
+Open another terminal, move to the same directory, run the command below, then follow the URL to chat with your agent.
 
 ```bash
 pnpm start:client
