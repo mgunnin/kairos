@@ -87,3 +87,6 @@ scripts/bug_hunt/reports/
 scripts/bug_hunt/reports/*.md
 
 lit-config.json
+
+.specstory
+notes
