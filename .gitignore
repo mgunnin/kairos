@@ -61,3 +61,7 @@ agent/content
 eliza.manifest
 eliza.manifest.sgx
 eliza.sig
+
+.specstory
+notes
+agent/wallet_data.txt
