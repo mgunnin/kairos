@@ -408,7 +408,7 @@ export type Handler = (
     message: Memory,
     state?: State,
     options?: { [key: string]: unknown },
-    callback?: HandlerCallback
+    callback?: HandlerCallback,
 ) => Promise<unknown>;
 
 /**
@@ -416,7 +416,7 @@ export type Handler = (
  */
 export type HandlerCallback = (
     response: Content,
-    files?: any
+    files?: any,
 ) => Promise<Memory[]>;
 
 /**
@@ -425,7 +425,7 @@ export type HandlerCallback = (
 export type Validator = (
     runtime: IAgentRuntime,
     message: Memory,
-    state?: State
+    state?: State,
 ) => Promise<boolean>;
 
 /**
@@ -502,7 +502,7 @@ export interface Provider {
     get: (
         runtime: IAgentRuntime,
         message: Memory,
-        state?: State
+        state?: State,
     ) => Promise<any>;
 }
 
@@ -654,6 +654,7 @@ export enum Clients {
     SLACK = "slack",
     GITHUB = "github",
     INSTAGRAM = "instagram",
+    SIMSAI = "simsai"
 }
 
 export interface IAgentConfig {
@@ -761,6 +762,11 @@ export type Character = {
         discordMessageHandlerTemplate?: TemplateType;
         slackMessageHandlerTemplate?: TemplateType;
         slackShouldRespondTemplate?: TemplateType;
+        jeeterPostTemplate?: string;
+        jeeterSearchTemplate?: string;
+        jeeterInteractionTemplate?: string;
+        jeeterMessageHandlerTemplate?: string;
+        jeeterShouldRespondTemplate?: string;
     };
 
     /** Character biography */
@@ -912,6 +918,14 @@ export type Character = {
         nicknames?: string[];
     };
 
+    /** Optional SimsAI profile */
+    simsaiProfile?: {
+        id: string;
+        username: string;
+        screenName: string;
+        bio: string;
+    };
+
     /** Optional NFT prompt */
     nft?: {
         prompt: string;
@@ -1022,13 +1036,13 @@ export interface IDatabaseAdapter {
             agentId?: UUID;
             unique?: boolean;
             tableName: string;
-        }
+        },
     ): Promise<Memory[]>;
 
     createMemory(
         memory: Memory,
         tableName: string,
-        unique?: boolean
+        unique?: boolean,
     ): Promise<void>;
 
     removeMemory(memoryId: UUID, tableName: string): Promise<void>;
@@ -1038,7 +1052,7 @@ export interface IDatabaseAdapter {
     countMemories(
         roomId: UUID,
         unique?: boolean,
-        tableName?: string
+        tableName?: string,
     ): Promise<number>;
 
     getGoals(params: {
@@ -1077,13 +1091,13 @@ export interface IDatabaseAdapter {
 
     getParticipantUserState(
         roomId: UUID,
-        userId: UUID
+        userId: UUID,
     ): Promise<"FOLLOWED" | "MUTED" | null>;
 
     setParticipantUserState(
         roomId: UUID,
         userId: UUID,
-        state: "FOLLOWED" | "MUTED" | null
+        state: "FOLLOWED" | "MUTED" | null,
     ): Promise<void>;
 
     createRelationship(params: { userA: UUID; userB: UUID }): Promise<boolean>;
@@ -1147,7 +1161,7 @@ export interface IMemoryManager {
     }): Promise<Memory[]>;
 
     getCachedEmbeddings(
-        content: string
+        content: string,
     ): Promise<{ embedding: number[]; levenshtein_score: number }[]>;
 
     getMemoryById(id: UUID): Promise<Memory | null>;
@@ -1162,7 +1176,7 @@ export interface IMemoryManager {
             count?: number;
             roomId: UUID;
             unique?: boolean;
-        }
+        },
     ): Promise<Memory[]>;
 
     createMemory(memory: Memory, unique?: boolean): Promise<void>;
@@ -1202,6 +1216,7 @@ export interface IRAGKnowledgeManager {
         isShared: boolean;
     }): Promise<void>;
     cleanupDeletedKnowledgeFiles(): Promise<void>;
+    generateScopedId(path: string, isShared: boolean): UUID;
 }
 
 export type CacheOptions = {
@@ -1294,14 +1309,14 @@ export interface IAgentRuntime {
         message: Memory,
         responses: Memory[],
         state?: State,
-        callback?: HandlerCallback
+        callback?: HandlerCallback,
     ): Promise<void>;
 
     evaluate(
         message: Memory,
         state?: State,
         didRespond?: boolean,
-        callback?: HandlerCallback
+        callback?: HandlerCallback,
     ): Promise<string[] | null>;
 
     ensureParticipantExists(userId: UUID, roomId: UUID): Promise<void>;
@@ -1310,7 +1325,7 @@ export interface IAgentRuntime {
         userId: UUID,
         userName: string | null,
         name: string | null,
-        source: string | null
+        source: string | null,
     ): Promise<void>;
 
     registerAction(action: Action): void;
@@ -1320,7 +1335,7 @@ export interface IAgentRuntime {
         roomId: UUID,
         userName?: string,
         userScreenName?: string,
-        source?: string
+        source?: string,
     ): Promise<void>;
 
     ensureParticipantInRoom(userId: UUID, roomId: UUID): Promise<void>;
@@ -1329,7 +1344,7 @@ export interface IAgentRuntime {
 
     composeState(
         message: Memory,
-        additionalKeys?: { [key: string]: unknown }
+        additionalKeys?: { [key: string]: unknown },
     ): Promise<State>;
 
     updateRecentMessageState(state: State): Promise<State>;
@@ -1337,14 +1352,14 @@ export interface IAgentRuntime {
 
 export interface IImageDescriptionService extends Service {
     describeImage(
-        imageUrl: string
+        imageUrl: string,
     ): Promise<{ title: string; description: string }>;
 }
 
 export interface ITranscriptionService extends Service {
     transcribeAttachment(audioBuffer: ArrayBuffer): Promise<string | null>;
     transcribeAttachmentLocally(
-        audioBuffer: ArrayBuffer
+        audioBuffer: ArrayBuffer,
     ): Promise<string | null>;
     transcribe(audioBuffer: ArrayBuffer): Promise<string | null>;
     transcribeLocally(audioBuffer: ArrayBuffer): Promise<string | null>;
@@ -1365,7 +1380,7 @@ export interface ITextGenerationService extends Service {
         stop: string[],
         frequency_penalty: number,
         presence_penalty: number,
-        max_tokens: number
+        max_tokens: number,
     ): Promise<any>;
     queueTextCompletion(
         context: string,
@@ -1373,7 +1388,7 @@ export interface ITextGenerationService extends Service {
         stop: string[],
         frequency_penalty: number,
         presence_penalty: number,
-        max_tokens: number
+        max_tokens: number,
     ): Promise<string>;
     getEmbeddingResponse(input: string): Promise<number[] | undefined>;
 }
@@ -1382,7 +1397,7 @@ export interface IBrowserService extends Service {
     closeBrowser(): Promise<void>;
     getPageContent(
         url: string,
-        runtime: IAgentRuntime
+        runtime: IAgentRuntime,
     ): Promise<{ title: string; description: string; bodyContent: string }>;
 }
 
@@ -1401,7 +1416,7 @@ export interface IAwsS3Service extends Service {
         imagePath: string,
         subDirectory: string,
         useSignedUrl: boolean,
-        expiresIn: number
+        expiresIn: number,
     ): Promise<{
         success: boolean;
         url?: string;
@@ -1449,7 +1464,7 @@ export interface IIrysService extends Service {
     getDataFromAnAgent(
         agentsWalletPublicKeys: string[],
         tags: GraphQLTag[],
-        timestamp: IrysTimestamp
+        timestamp: IrysTimestamp,
     ): Promise<DataIrysFetchedFromGQL>;
     workerUploadDataOnIrys(
         data: any,
@@ -1460,13 +1475,13 @@ export interface IIrysService extends Service {
         validationThreshold: number[],
         minimumProviders: number[],
         testProvider: boolean[],
-        reputation: number[]
+        reputation: number[],
     ): Promise<UploadIrysResult>;
     providerUploadDataOnIrys(
         data: any,
         dataType: IrysDataType,
         serviceCategory: string[],
-        protocol: string[]
+        protocol: string[],
     ): Promise<UploadIrysResult>;
 }
 
@@ -1477,7 +1492,7 @@ export interface ITeeLogService extends Service {
         roomId: string,
         userId: string,
         type: string,
-        content: string
+        content: string,
     ): Promise<boolean>;
 }
 
@@ -1596,7 +1611,7 @@ export interface IVerifiableInferenceAdapter {
     generateText(
         context: string,
         modelClass: string,
-        options?: VerifiableInferenceOptions
+        options?: VerifiableInferenceOptions,
     ): Promise<VerifiableInferenceResult>;
 
     /**
