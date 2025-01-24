@@ -101,7 +101,7 @@ export class SttTtsPlugin implements Plugin {
 
     init(params: { space: Space; pluginConfig?: Record<string, any> }): void {
         elizaLogger.log(
-            "[SttTtsPlugin] init => Space fully ready. Subscribing to events."
+            "[SttTtsPlugin] init => Space fully ready. Subscribing to events.",
         );
 
         this.space = params.space;
@@ -127,7 +127,6 @@ export class SttTtsPlugin implements Plugin {
         if (config?.chatContext) {
             this.chatContext = config.chatContext;
         }
-        elizaLogger.log("[SttTtsPlugin] Plugin config =>", config);
 
         this.volumeBuffers = new Map<string, number[]>();
     }
@@ -163,14 +162,14 @@ export class SttTtsPlugin implements Plugin {
             this.userSpeakingTimer = setTimeout(() => {
                 elizaLogger.log(
                     "[SttTtsPlugin] start processing audio for user =>",
-                    data.userId
+                    data.userId,
                 );
                 this.userSpeakingTimer = null;
                 this.processAudio(data.userId).catch((err) =>
                     elizaLogger.error(
                         "[SttTtsPlugin] handleSilence error =>",
-                        err
-                    )
+                        err,
+                    ),
                 );
             }, SILENCE_DETECTION_THRESHOLD_MS);
         } else {
@@ -183,7 +182,7 @@ export class SttTtsPlugin implements Plugin {
             const samples = new Int16Array(
                 data.samples.buffer,
                 data.samples.byteOffset,
-                data.samples.length / 2
+                data.samples.length / 2,
             );
             const maxAmplitude = Math.max(...samples.map(Math.abs)) / 32768;
             volumeBuffer.push(maxAmplitude);
@@ -209,7 +208,7 @@ export class SttTtsPlugin implements Plugin {
     // /src/sttTtsPlugin.ts
     private async convertPcmToWavInMemory(
         pcmData: Int16Array,
-        sampleRate: number
+        sampleRate: number,
     ): Promise<ArrayBuffer> {
         // number of channels
         const numChannels = 1;
@@ -268,7 +267,7 @@ export class SttTtsPlugin implements Plugin {
         try {
             elizaLogger.log(
                 "[SttTtsPlugin] Starting audio processing for user:",
-                userId
+                userId,
             );
             const chunks = this.pcmBuffers.get(userId) || [];
             this.pcmBuffers.clear();
@@ -276,12 +275,12 @@ export class SttTtsPlugin implements Plugin {
             if (!chunks.length) {
                 elizaLogger.warn(
                     "[SttTtsPlugin] No audio chunks for user =>",
-                    userId
+                    userId,
                 );
                 return;
             }
             elizaLogger.log(
-                `[SttTtsPlugin] Flushing STT buffer for user=${userId}, chunks=${chunks.length}`
+                `[SttTtsPlugin] Flushing STT buffer for user=${userId}, chunks=${chunks.length}`,
             );
 
             const totalLen = chunks.reduce((acc, c) => acc + c.length, 0);
@@ -296,23 +295,22 @@ export class SttTtsPlugin implements Plugin {
             const wavBuffer = await this.convertPcmToWavInMemory(merged, 48000);
 
             // Whisper STT
-            const sttText = await this.transcriptionService.transcribe(
-                wavBuffer
-            );
+            const sttText =
+                await this.transcriptionService.transcribe(wavBuffer);
 
             elizaLogger.log(
-                `[SttTtsPlugin] Transcription result: "${sttText}"`
+                `[SttTtsPlugin] Transcription result: "${sttText}"`,
             );
 
             if (!sttText || !sttText.trim()) {
                 elizaLogger.warn(
                     "[SttTtsPlugin] No speech recognized for user =>",
-                    userId
+                    userId,
                 );
                 return;
             }
             elizaLogger.log(
-                `[SttTtsPlugin] STT => user=${userId}, text="${sttText}"`
+                `[SttTtsPlugin] STT => user=${userId}, text="${sttText}"`,
             );
 
             // Get response
@@ -320,12 +318,12 @@ export class SttTtsPlugin implements Plugin {
             if (!replyText || !replyText.length || !replyText.trim()) {
                 elizaLogger.warn(
                     "[SttTtsPlugin] No replyText for user =>",
-                    userId
+                    userId,
                 );
                 return;
             }
             elizaLogger.log(
-                `[SttTtsPlugin] user=${userId}, reply="${replyText}"`
+                `[SttTtsPlugin] user=${userId}, reply="${replyText}"`,
             );
             this.isProcessingAudio = false;
             this.volumeBuffers.clear();
@@ -348,7 +346,7 @@ export class SttTtsPlugin implements Plugin {
             this.processTtsQueue().catch((err) => {
                 elizaLogger.error(
                     "[SttTtsPlugin] processTtsQueue error =>",
-                    err
+                    err,
                 );
             });
         }
@@ -370,14 +368,14 @@ export class SttTtsPlugin implements Plugin {
                 const pcm = await this.convertMp3ToPcm(ttsAudio, 48000);
                 if (signal.aborted) {
                     elizaLogger.log(
-                        "[SttTtsPlugin] TTS interrupted before streaming"
+                        "[SttTtsPlugin] TTS interrupted before streaming",
                     );
                     return;
                 }
                 await this.streamToJanus(pcm, 48000);
                 if (signal.aborted) {
                     elizaLogger.log(
-                        "[SttTtsPlugin] TTS interrupted after streaming"
+                        "[SttTtsPlugin] TTS interrupted after streaming",
                     );
                     return;
                 }
@@ -396,7 +394,7 @@ export class SttTtsPlugin implements Plugin {
      */
     private async handleUserMessage(
         userText: string,
-        userId: string // This is the raw Twitter user ID like 'tw-1865462035586142208'
+        userId: string, // This is the raw Twitter user ID like 'tw-1865462035586142208'
     ): Promise<string> {
         // Extract the numeric ID part
         const numericId = userId.replace("tw-", "");
@@ -410,7 +408,7 @@ export class SttTtsPlugin implements Plugin {
             userUuid,
             userId, // Use full Twitter ID as username
             `Twitter User ${numericId}`,
-            "twitter"
+            "twitter",
         );
 
         // Ensure room exists and user is in it
@@ -427,7 +425,7 @@ export class SttTtsPlugin implements Plugin {
             {
                 twitterUserName: this.client.profile.username,
                 agentName: this.runtime.character.name,
-            }
+            },
         );
 
         const memory = {
@@ -492,7 +490,7 @@ export class SttTtsPlugin implements Plugin {
 
     private async _generateResponse(
         message: Memory,
-        context: string
+        context: string,
     ): Promise<Content> {
         const { userId, roomId } = message;
 
@@ -506,7 +504,7 @@ export class SttTtsPlugin implements Plugin {
 
         if (!response) {
             elizaLogger.error(
-                "[SttTtsPlugin] No response from generateMessageResponse"
+                "[SttTtsPlugin] No response from generateMessageResponse",
             );
             return;
         }
@@ -554,7 +552,7 @@ export class SttTtsPlugin implements Plugin {
         if (
             (message.content as Content).text.length < 50 &&
             loseInterestWords.some((word) =>
-                (message.content as Content).text?.toLowerCase().includes(word)
+                (message.content as Content).text?.toLowerCase().includes(word),
             )
         ) {
             return true;
@@ -564,7 +562,7 @@ export class SttTtsPlugin implements Plugin {
         if (
             (message.content as Content).text?.length < 8 &&
             ignoreWords.some((word) =>
-                (message.content as Content).text?.toLowerCase().includes(word)
+                (message.content as Content).text?.toLowerCase().includes(word),
             )
         ) {
             return true;
@@ -575,7 +573,7 @@ export class SttTtsPlugin implements Plugin {
 
     private async _shouldRespond(
         message: string,
-        state: State
+        state: State,
     ): Promise<boolean> {
         const lowerMessage = message.toLowerCase();
         const characterName = this.runtime.character.name.toLowerCase();
@@ -610,7 +608,7 @@ export class SttTtsPlugin implements Plugin {
 
         elizaLogger.error(
             "Invalid response from response generateText:",
-            response
+            response,
         );
         return false;
     }
@@ -638,7 +636,7 @@ export class SttTtsPlugin implements Plugin {
         if (!resp.ok) {
             const errText = await resp.text();
             throw new Error(
-                `[SttTtsPlugin] ElevenLabs TTS error => ${resp.status} ${errText}`
+                `[SttTtsPlugin] ElevenLabs TTS error => ${resp.status} ${errText}`,
             );
         }
         const arrayBuf = await resp.arrayBuffer();
@@ -650,7 +648,7 @@ export class SttTtsPlugin implements Plugin {
      */
     private convertMp3ToPcm(
         mp3Buf: Buffer,
-        outRate: number
+        outRate: number,
     ): Promise<Int16Array> {
         return new Promise((resolve, reject) => {
             const ff = spawn("ffmpeg", [
@@ -680,7 +678,7 @@ export class SttTtsPlugin implements Plugin {
                 const samples = new Int16Array(
                     raw.buffer,
                     raw.byteOffset,
-                    raw.byteLength / 2
+                    raw.byteLength / 2,
                 );
                 resolve(samples);
             });
@@ -696,7 +694,7 @@ export class SttTtsPlugin implements Plugin {
      */
     private async streamToJanus(
         samples: Int16Array,
-        sampleRate: number
+        sampleRate: number,
     ): Promise<void> {
         // TODO: Check if better than 480 fixed
         const FRAME_SIZE = Math.floor(sampleRate * 0.01); // 10ms frames => 480 @48kHz
@@ -726,7 +724,7 @@ export class SttTtsPlugin implements Plugin {
     public addMessage(role: "system" | "user" | "assistant", content: string) {
         this.chatContext.push({ role, content });
         elizaLogger.log(
-            `[SttTtsPlugin] addMessage => role=${role}, content=${content}`
+            `[SttTtsPlugin] addMessage => role=${role}, content=${content}`,
         );
     }
 

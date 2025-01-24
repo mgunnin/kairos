@@ -12,7 +12,7 @@ If {{agentName}} is talking too much, you can choose [IGNORE]
 Your response must include one of the options.`;
 
 export const parseShouldRespondFromText = (
-    text: string
+    text: string,
 ): "RESPOND" | "IGNORE" | "STOP" | null => {
     const match = text
         .split("\n")[0]
@@ -92,6 +92,7 @@ export function parseJsonArrayFromText(text: string) {
             jsonData = JSON.parse(normalizedJson);
         } catch (e) {
             console.error("Error parsing JSON:", e);
+            console.error("Text is not JSON", text);
         }
     }
 
@@ -106,6 +107,7 @@ export function parseJsonArrayFromText(text: string) {
                 const normalizedJson = arrayMatch[0].replace(/'/g, '"');
                 jsonData = JSON.parse(normalizedJson);
             } catch (e) {
+                console.error("Text is not JSON", text);
                 console.error("Error parsing JSON:", e);
             }
         }
@@ -129,7 +131,7 @@ export function parseJsonArrayFromText(text: string) {
  * @returns An object parsed from the JSON string if successful; otherwise, null or the result of parsing an array.
  */
 export function parseJSONObjectFromText(
-    text: string
+    text: string,
 ): Record<string, any> | null {
     let jsonData = null;
 
@@ -140,6 +142,7 @@ export function parseJSONObjectFromText(
             jsonData = JSON.parse(jsonBlockMatch[1]);
         } catch (e) {
             console.error("Error parsing JSON:", e);
+            console.error("Text is not JSON", text);
             return null;
         }
     } else {
@@ -151,6 +154,7 @@ export function parseJSONObjectFromText(
                 jsonData = JSON.parse(objectMatch[0]);
             } catch (e) {
                 console.error("Error parsing JSON:", e);
+                console.error("Text is not JSON", text);
                 return null;
             }
         }
@@ -169,10 +173,50 @@ export function parseJSONObjectFromText(
     }
 }
 
+/**
+ * Extracts specific attributes (e.g., user, text, action) from a JSON-like string using regex.
+ * @param response - The cleaned string response to extract attributes from.
+ * @param attributesToExtract - An array of attribute names to extract.
+ * @returns An object containing the extracted attributes.
+ */
+export function extractAttributes(
+    response: string,
+    attributesToExtract: string[],
+): { [key: string]: string | undefined } {
+    const attributes: { [key: string]: string | undefined } = {};
+
+    attributesToExtract.forEach((attribute) => {
+        const match = response.match(
+            new RegExp(`"${attribute}"\\s*:\\s*"([^"]*)"`, "i"),
+        );
+        if (match) {
+            attributes[attribute] = match[1];
+        }
+    });
+
+    return attributes;
+}
+
+/**
+ * Cleans a JSON-like response string by removing unnecessary markers, line breaks, and extra whitespace.
+ * This is useful for handling improperly formatted JSON responses from external sources.
+ *
+ * @param response - The raw JSON-like string response to clean.
+ * @returns The cleaned string, ready for parsing or further processing.
+ */
+
+export function cleanJsonResponse(response: string): string {
+    return response
+        .replace(/```json\s*/g, "") // Remove ```json
+        .replace(/```\s*/g, "") // Remove any remaining ```
+        .replace(/(\r\n|\n|\r)/g, "") // Remove line breaks
+        .trim();
+}
+
 export const postActionResponseFooter = `Choose any combination of [LIKE], [RETWEET], [QUOTE], and [REPLY] that are appropriate. Each action must be on its own line. Your response must only include the chosen actions.`;
 
 export const parseActionResponseFromText = (
-    text: string
+    text: string,
 ): { actions: ActionResponse } => {
     const actions: ActionResponse = {
         like: false,
@@ -211,7 +255,7 @@ export const parseActionResponseFromText = (
  */
 export function truncateToCompleteSentence(
     text: string,
-    maxLength: number
+    maxLength: number,
 ): string {
     if (text.length <= maxLength) {
         return text;
