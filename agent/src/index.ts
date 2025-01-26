@@ -8,8 +8,10 @@ import { SupabaseDatabaseAdapter } from "@elizaos/adapter-supabase";
 import { AlexaClientInterface } from "@elizaos/client-alexa";
 import { AutoClientInterface } from "@elizaos/client-auto";
 import { DiscordClientInterface } from "@elizaos/client-discord";
+import { FarcasterClientInterface } from "@elizaos/client-farcaster";
 import { InstagramClientInterface } from "@elizaos/client-instagram";
 import { LensAgentClient } from "@elizaos/client-lens";
+import { JeeterClientInterface } from "@elizaos/client-simsai";
 import { SlackClientInterface } from "@elizaos/client-slack";
 import { TelegramClientInterface } from "@elizaos/client-telegram";
 import { TwitterClientInterface } from "@elizaos/client-twitter";
@@ -63,7 +65,7 @@ import { aptosPlugin } from "@elizaos/plugin-aptos";
 import { artheraPlugin } from "@elizaos/plugin-arthera";
 import { autonomePlugin } from "@elizaos/plugin-autonome";
 import { availPlugin } from "@elizaos/plugin-avail";
-import { avalanchePlugin } from "@elizaos/plugin-avalanche";
+// import { avalanchePlugin } from "@elizaos/plugin-avalanche";
 import { b2Plugin } from "@elizaos/plugin-b2";
 import { binancePlugin } from "@elizaos/plugin-binance";
 import { birdeyePlugin } from "@elizaos/plugin-birdeye";
@@ -95,6 +97,7 @@ import { flowPlugin } from "@elizaos/plugin-flow";
 import { formPlugin } from "@elizaos/plugin-form";
 import { fuelPlugin } from "@elizaos/plugin-fuel";
 import { genLayerPlugin } from "@elizaos/plugin-genlayer";
+import { giphyPlugin } from "@elizaos/plugin-giphy";
 import { giphyPlugin } from "@elizaos/plugin-giphy";
 import { gitcoinPassportPlugin } from "@elizaos/plugin-gitcoin-passport";
 import { holdstationPlugin } from "@elizaos/plugin-holdstation";
@@ -748,6 +751,11 @@ function initializeDatabase(dataDir: string) {
         process.env.QDRANT_KEY &&
         process.env.QDRANT_PORT &&
         process.env.QDRANT_VECTOR_SIZE
+    } else if (
+        process.env.QDRANT_URL &&
+        process.env.QDRANT_KEY &&
+        process.env.QDRANT_PORT &&
+        process.env.QDRANT_VECTOR_SIZE
     ) {
         elizaLogger.info("Initializing Qdrant adapter...");
         const db = new QdrantDatabaseAdapter(
@@ -757,6 +765,7 @@ function initializeDatabase(dataDir: string) {
             Number(process.env.QDRANT_VECTOR_SIZE)
         );
         return db;
+    } else {
     } else {
         const filePath =
             process.env.SQLITE_FILE ?? path.resolve(dataDir, "db.sqlite");
@@ -1007,9 +1016,9 @@ export async function createAgent(
                 ? dexScreenerPlugin
                 : null,
             getSecret(character, "FOOTBALL_API_KEY") ? footballPlugin : null,
-            getSecret(character, "CONFLUX_CORE_PRIVATE_KEY")
-                ? confluxPlugin
-                : null,
+            // getSecret(character, "CONFLUX_CORE_PRIVATE_KEY")
+            //     ? confluxPlugin
+            //     : null,
             nodePlugin,
             getSecret(character, "ROUTER_NITRO_EVM_PRIVATE_KEY") &&
             getSecret(character, "ROUTER_NITRO_EVM_ADDRESS")
@@ -1025,7 +1034,7 @@ export async function createAgent(
                 ? solanaAgentkitPlugin
                 : null,
             getSecret(character, "AUTONOME_JWT_TOKEN") ? autonomePlugin : null,
-            (getSecret(character, "NEAR_ADDRESS") ||
+            ((getSecret(character, "NEAR_ADDRESS") ||
                 getSecret(character, "NEAR_WALLET_PUBLIC_KEY")) &&
             getSecret(character, "NEAR_WALLET_SECRET_KEY")
                 ? nearPlugin
@@ -1037,12 +1046,12 @@ export async function createAgent(
                 : null,
             (getSecret(character, "EVM_PUBLIC_KEY") ||
                 getSecret(character, "INJECTIVE_PUBLIC_KEY")) &&
-            getSecret(character, "INJECTIVE_PRIVATE_KEY")
-                ? injectivePlugin
-                : null,
-            getSecret(character, "COSMOS_RECOVERY_PHRASE") &&
-                getSecret(character, "COSMOS_AVAILABLE_CHAINS") &&
-                createCosmosPlugin(),
+            // getSecret(character, "INJECTIVE_PRIVATE_KEY")
+            //     ? injectivePlugin
+            //     : null,
+            // getSecret(character, "COSMOS_RECOVERY_PHRASE") &&
+            //     getSecret(character, "COSMOS_AVAILABLE_CHAINS") &&
+            //     createCosmosPlugin(),
             (getSecret(character, "SOLANA_PUBLIC_KEY") ||
                 (getSecret(character, "WALLET_PUBLIC_KEY") &&
                     !getSecret(character, "WALLET_PUBLIC_KEY")?.startsWith(
@@ -1134,9 +1143,9 @@ export async function createAgent(
                 ? cronosZkEVMPlugin
                 : null,
             getSecret(character, "TEE_MARLIN") ? teeMarlinPlugin : null,
-            getSecret(character, "TON_PRIVATE_KEY") ? tonPlugin : null,
+            // getSecret(character, "TON_PRIVATE_KEY") ? tonPlugin : null,
             getSecret(character, "THIRDWEB_SECRET_KEY") ? thirdwebPlugin : null,
-            getSecret(character, "SUI_PRIVATE_KEY") ? suiPlugin : null,
+            // getSecret(character, "SUI_PRIVATE_KEY") ? suiPlugin : null,
             getSecret(character, "STORY_PRIVATE_KEY") ? storyPlugin : null,
             getSecret(character, "SQUID_SDK_URL") &&
             getSecret(character, "SQUID_INTEGRATOR_ID") &&
@@ -1146,9 +1155,9 @@ export async function createAgent(
                 ? squidRouterPlugin
                 : null,
             getSecret(character, "FUEL_PRIVATE_KEY") ? fuelPlugin : null,
-            getSecret(character, "AVALANCHE_PRIVATE_KEY")
-                ? avalanchePlugin
-                : null,
+            // getSecret(character, "AVALANCHE_PRIVATE_KEY")
+            //     ? avalanchePlugin
+            //     : null,
             getSecret(character, "BIRDEYE_API_KEY") ? birdeyePlugin : null,
             getSecret(character, "ECHOCHAMBERS_API_URL") &&
             getSecret(character, "ECHOCHAMBERS_API_KEY")
@@ -1186,7 +1195,7 @@ export async function createAgent(
                 ? akashPlugin
                 : null,
             getSecret(character, "CHAINBASE_API_KEY") ? chainbasePlugin : null,
-            getSecret(character, "QUAI_PRIVATE_KEY") ? quaiPlugin : null,
+            // getSecret(character, "QUAI_PRIVATE_KEY") ? quaiPlugin : null,
             getSecret(character, "RESERVOIR_API_KEY")
                 ? createNFTCollectionsPlugin()
                 : null,
@@ -1207,6 +1216,7 @@ export async function createAgent(
             )
                 ? openaiPlugin
                 : null,
+            getSecret(character, "DEVIN_API_TOKEN") ? devinPlugin : null,
             getSecret(character, "DEVIN_API_TOKEN") ? devinPlugin : null,
             getSecret(character, "INITIA_PRIVATE_KEY") ? initiaPlugin : null,
             getSecret(character, "HOLDSTATION_PRIVATE_KEY")
@@ -1231,6 +1241,7 @@ export async function createAgent(
                 ? hyperbolicPlugin
                 : null,
             getSecret(character, "SUNO_API_KEY") ? sunoPlugin : null,
+            getSecret(character, "UDIO_AUTH_TOKEN") ? udioPlugin : null,
             getSecret(character, "UDIO_AUTH_TOKEN") ? udioPlugin : null,
             getSecret(character, "IMGFLIP_USERNAME") &&
             getSecret(character, "IMGFLIP_PASSWORD")
@@ -1488,10 +1499,12 @@ if (
 ) {
     // Handle uncaught exceptions to prevent the process from crashing
     process.on("uncaughtException", function (err) {
+    process.on("uncaughtException", function (err) {
         console.error("uncaughtException", err);
     });
 
     // Handle unhandled rejections to prevent the process from crashing
+    process.on("unhandledRejection", function (err) {
     process.on("unhandledRejection", function (err) {
         console.error("unhandledRejection", err);
     });
